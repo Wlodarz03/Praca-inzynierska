@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ff854d03754694b84b6914280052a0, type: 3}
+  m_Name: CommandCode
+  m_EditorClassIdentifier: Assembly-CSharp::DesignPatternCode
+  patternName: Command
+  files:
+  - fileName: ICommand
+    code: "\npublic interface ICommand\r\n{\r\n   void Execute();\r\n   void Undo();\r\n}"
+  - fileName: CommandInvoker
+    code: "\npublic class CommandInvoker\r\n{\n   private static Stack<ICommand>
+      undoStack = new Stack<ICommand>();\r\n   public static void ExecuteCommand(ICommand
+      command)\r\n   {\r\n      command.Execute();\n      undoStack.Push(command);\r\n  
+      }\r\n   public static void UndoCommand()\r\n   {\r\n      if (undoStack.Count
+      > 0)\r\n      {\r\n         ICommand activeCommand = undoStack.Pop();\n        
+      activeCommand.Undo();\r\n      }\r\n   }\r\n}"
+  - fileName: PlayerMover
+    code: "\npublic class PlayerMover : MonoBehaviour\r\n{\n   [SerializeField] private
+      LayerMask obstacleLayer;\r\n   private const float boardSpacing = 1f;\r\n  
+      public void Move(Vector3 movement)\r\n   {\r\n      transform.position = transform.position
+      + movement;\r\n   }\n\r\n   public bool IsValidMove(Vector3 movement)\r\n  
+      {\n      return !Physics.Raycast(transform.position,movement, boardSpacing,
+      obstacleLayer);\r\n   }\r\n}"
+  - fileName: MoveCommand
+    code: "\npublic class MoveCommand : ICommand\r\n{\r\n   PlayerMover playerMover;\r\n  
+      Vector3 movement;\n   public MoveCommand(PlayerMover player, Vector3 moveVector)\r\n  
+      {\r\n      this.playerMover = player;\r\n      this.movement = moveVector;\r\n  
+      }\r\n   public void Execute()\r\n   {\r\n      playerMover.Move(movement);\r\n  
+      }\r\n   public void Undo()\r\n   {\r\n      playerMover.Move(-movement);\r\n  
+      }\r\n}"

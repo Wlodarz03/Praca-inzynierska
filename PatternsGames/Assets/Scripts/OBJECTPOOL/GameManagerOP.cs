@@ -8,8 +8,6 @@ public class GameManagerOP : MonoBehaviour
     public static GameManagerOP Instance;
     private void Awake()
     {
-        Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 0;
         if (Instance == null) Instance = this;
     }
 
@@ -39,11 +37,6 @@ public class GameManagerOP : MonoBehaviour
         if (isPlaying)
         {
             currentScore += Time.deltaTime;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            SceneManager.LoadScene(0);
         }
     }
 

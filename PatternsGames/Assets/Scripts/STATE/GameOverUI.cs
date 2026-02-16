@@ -1,6 +1,6 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameOverUI : MonoBehaviour
 {
@@ -17,7 +17,15 @@ public class GameOverUI : MonoBehaviour
     public void ActivateGameOverUI()
     {
         gameOverUI.SetActive(true);
-        scoreText.text = "Twoj wynik: " + gm.score + "\n\n Doszedles do poziomu: " + gm.currentLevel;
+        scoreText.text = "Your score: " + gm.score + "\n\n Reached level: " + gm.currentLevel;
+    }
+
+    public void Reset()
+    {
+        Time.timeScale = 1f;
+        AudioManager.Instance.StopNarration();
+        gm.StartNewGame();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void PlayButtonHandler()
@@ -28,6 +36,6 @@ public class GameOverUI : MonoBehaviour
 
         gm.StartNewGame();
 
-        UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

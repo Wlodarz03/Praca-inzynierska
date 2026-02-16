@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System.Reflection;
+using UnityEngine.SceneManagement;
 
 public class CommandHistoryVisualizer : MonoBehaviour
 {
@@ -9,10 +9,11 @@ public class CommandHistoryVisualizer : MonoBehaviour
     [SerializeField] private RectTransform startArrow;
     [SerializeField] private RectTransform currentArrow;
     [SerializeField] private GameObject[] slots;
+    [SerializeField] private RectTransform startName;
+    [SerializeField] private RectTransform currentName;
 
     [Header("Animation Settings")]
     [SerializeField] private float arrowMoveSpeed = 8f;
-
     private Vector3 targetStartPos;
     private Vector3 targetCurrentPos;
     private Quaternion targetStartRot;
@@ -34,6 +35,12 @@ public class CommandHistoryVisualizer : MonoBehaviour
 
         startArrow.localRotation = Quaternion.Lerp(startArrow.localRotation, targetStartRot, Time.deltaTime * arrowMoveSpeed);
         currentArrow.localRotation = Quaternion.Lerp(currentArrow.localRotation, targetCurrentRot, Time.deltaTime * arrowMoveSpeed);
+
+        if (startName != null)
+            startName.rotation = Quaternion.identity;
+
+        if (currentName != null)
+            currentName.rotation = Quaternion.identity;
     }
 
     public void UpdateText(int ind, string text)
@@ -126,5 +133,4 @@ public class CommandHistoryVisualizer : MonoBehaviour
             targetCurrentRot = currentArrow.localRotation;
         }
     }
-
 }

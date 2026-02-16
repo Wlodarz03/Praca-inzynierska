@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ff854d03754694b84b6914280052a0, type: 3}
+  m_Name: Factory
+  m_EditorClassIdentifier: Assembly-CSharp::DesignPatternCode
+  patternName: Factory
+  files:
+  - fileName: IProduct
+    code: "\npublic interface IProduct\n{\r\n   public string ProductName { get;
+      set; }\r\n   public void Initialize();\r\n}"
+  - fileName: Factory
+    code: "\npublic abstract class Factory : MonoBehaviour\r\n{\r\n   public abstract
+      IProduct GetProduct(Vector3 position);\r\n   // shared method with all factories\r\n  
+      \u2026\r\n}"
+  - fileName: ProductA
+    code: "\npublic class ProductA : MonoBehaviour, IProduct\r\n{\n   [SerializeField]
+      private string productName = \"ProductA\";\r\n   public string ProductName
+      { get => productName; set => productName = value ; }\r\n   private ParticleSystem
+      particleSystem;\r\n   public void Initialize()\r\n   {\r\n      // any unique
+      logic to this product\r\n      gameObject.name = productName;\r\n      particleSystem
+      = GetComponentInChildren<ParticleSystem>();\r\n      particleSystem?.Stop();\r\n     
+      particleSystem?.Play();\r\n   }\r\n}"
+  - fileName: ConcreteFactoryA
+    code: "\npublic class ConcreteFactoryA : Factory\r\n{\r\n   [SerializeField]
+      private ProductA productPrefab;\n\r\n   public override IProduct GetProduct(Vector3
+      position)\r\n   {\r\n      // create a Prefab instance and get the product
+      component\n      GameObject instance = Instantiate(productPrefab.gameObject,\r\n     
+      position, Quaternion.identity);\r\n      ProductA newProduct = instance.GetComponent<ProductA>();\r\n     
+      // each product contains its own logic\r\n      newProduct.Initialize();\r\n     
+      return newProduct;\r\n   }\r\n}"

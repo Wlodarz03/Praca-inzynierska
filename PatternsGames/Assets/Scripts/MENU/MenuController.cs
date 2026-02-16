@@ -24,6 +24,16 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene(4);
     }
 
+    public void StartObserverGame()
+    {
+        SceneManager.LoadScene(5);
+    }
+
+    public void StartDecoratorGame()
+    {
+        SceneManager.LoadScene(6);
+    }
+
     public void ExitGame()
     {
         Application.Quit();

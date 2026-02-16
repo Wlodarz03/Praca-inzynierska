@@ -1,0 +1,143 @@
+1
+00:00:00,000 --> 00:00:04,320
+Game Overview. This game is a simple tower defense experience.
+
+2
+00:00:04,320 --> 00:00:09,760
+The player places turrets along a predefined path to stop incoming enemies from reaching the base.
+
+3
+00:00:10,560 --> 00:00:13,840
+Each enemy that is defeated rewards the player with coins.
+
+4
+00:00:14,560 --> 00:00:18,320
+Coins can be used to place new turrets or upgrade existing ones.
+
+5
+00:00:19,040 --> 00:00:23,520
+If an enemy manages to pass through the entire path, the player takes damage.
+
+6
+00:00:24,000 --> 00:00:27,200
+When the player's health reaches zero, the game is over.
+
+7
+00:00:27,680 --> 00:00:33,280
+Turret system. All turrets in the game are based on a shared base turret.
+
+8
+00:00:33,840 --> 00:00:37,440
+This turret provides basic functionality such as range,
+
+9
+00:00:37,440 --> 00:00:41,680
+fire rate, and cost. There are two advanced turret upgrades.
+
+10
+00:00:42,320 --> 00:00:46,640
+One, machine gun turret, fires faster than base turret.
+
+11
+00:00:47,520 --> 00:00:51,600
+Two, sniper turret has bigger range than base turret.
+
+12
+00:00:52,320 --> 00:00:55,520
+Instead of creating completely separate turret classes,
+
+13
+00:00:55,600 --> 00:00:58,800
+upgrades are applied dynamically using the decorator pattern.
+
+14
+00:00:59,600 --> 00:01:04,720
+This means that every turret in the game is fundamentally a modified version of the base turret.
+
+15
+00:01:05,440 --> 00:01:11,440
+Decorator pattern. The decorator pattern allows behavior to be added to an object at runtime
+
+16
+00:01:11,440 --> 00:01:13,440
+without modifying its original class.
+
+17
+00:01:14,400 --> 00:01:17,920
+In this game, each turret upgrade is implemented as a decorator.
+
+18
+00:01:18,480 --> 00:01:22,240
+A decorator wraps an existing turret and modifies its stats.
+
+19
+00:01:22,240 --> 00:01:25,200
+Already placed turrets can be upgraded without replacing them.
+
+20
+00:01:26,000 --> 00:01:30,880
+By using the decorator pattern, turret upgrades remain modular and stackable,
+
+21
+00:01:30,880 --> 00:01:33,600
+while the core turret logic stays clean and reusable.
+
+22
+00:01:34,720 --> 00:01:39,360
+Visualization. When a turret is upgraded using the decorator pattern,
+
+23
+00:01:39,360 --> 00:01:42,000
+its appearance changes to reflect the new behavior.
+
+24
+00:01:42,880 --> 00:01:46,240
+Upgrading a turret to a machine gun changes its color to blue.
+
+25
+00:01:47,120 --> 00:01:50,560
+This visually informs the player that the turret now fires faster.
+
+26
+00:01:51,200 --> 00:01:54,400
+Upgrading a turret to a sniper changes its color to red.
+
+27
+00:01:54,960 --> 00:01:58,240
+The sniper upgrade represents the highest tier of enhancement.
+
+28
+00:01:58,960 --> 00:02:02,080
+If a turret was previously upgraded to a machine gun,
+
+29
+00:02:02,080 --> 00:02:05,840
+and is then upgraded to a sniper, the turret becomes red,
+
+30
+00:02:06,400 --> 00:02:08,320
+but still has increased fire rate.
+
+31
+00:02:09,200 --> 00:02:12,080
+When the player moves the mouse cursor over a turret,
+
+32
+00:02:12,080 --> 00:02:14,640
+its attack range is displayed directly on the map.
+
+33
+00:02:15,440 --> 00:02:18,960
+This allows the player to quickly evaluate turret placement and coverage.
+
+34
+00:02:19,680 --> 00:02:22,720
+The firing speed of a turret is not shown as a number.
+
+35
+00:02:23,280 --> 00:02:26,480
+Instead, it is communicated naturally through gameplay.
+
+36
+00:02:27,040 --> 00:02:32,800
+The faster a turret fires, the easier it is to perceive its fire rate through observation.

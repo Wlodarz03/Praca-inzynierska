@@ -98,44 +98,6 @@ public class LevelManager : MonoBehaviour
             levels[lvlNum] = buffer.ToArray();
     }
 
-    // void LoadLevels()
-    // {
-    //     string path = Path.Combine(Application.streamingAssetsPath, "levels.txt");
-    //     if (!File.Exists(path))
-    //     {
-    //         Debug.LogError("Brak pliku levels.txt");
-    //         return;
-    //     }
-
-    //     string[] lines = File.ReadAllLines(path);
-    //     int lvlNum = -1;
-    //     List<string> buffer = new List<string>();
-
-    //     foreach (var raw in lines)
-    //     {
-    //         string line = raw;
-    //         if (line.StartsWith(";"))
-    //         {
-    //             if (lvlNum >= 0 && buffer.Count > 0)
-    //             {
-    //                 levels[lvlNum] = buffer.ToArray();
-    //                 buffer.Clear();
-    //             }
-    //             string[] parts = line.Split(' ');
-    //             if (parts.Length > 1 && int.TryParse(parts[1], out int num))
-    //             {
-    //                 lvlNum = num;
-    //             }
-    //         }
-    //         else if (!string.IsNullOrWhiteSpace(line))
-    //         {
-    //             buffer.Add(line);
-    //         }
-    //     }
-    //     if (lvlNum >= 0 && buffer.Count > 0)
-    //         levels[lvlNum] = buffer.ToArray();
-    // }
-
     void BuildLevel(int levelIndex)
     {
         if (!levels.ContainsKey(levelIndex))
@@ -240,6 +202,44 @@ public class LevelManager : MonoBehaviour
         visualizer.ResetVisualizer();
     }
 
+    // void CenterCameraRight(string[] map)
+    // {
+    //     int width = 0;
+    //     foreach (var line in map)
+    //         if (line.Length > width)
+    //             width = line.Length;
+
+    //     int height = map.Length;
+
+    //     Camera cam = Camera.main;
+    //     if (cam == null) return;
+    //     //cam.rect = new Rect(0.45f, 0.25f, 0.55f, 0.75f);
+
+    //     float screenRatio = ((float)Screen.width / 2) / Screen.height;
+    //     float targetRatio = (float)width / height;
+
+    //     if (targetRatio > screenRatio)
+    //         cam.orthographicSize = width / 2f / screenRatio;
+    //     else
+    //         cam.orthographicSize = height / 2f;
+
+    //     float halfHeight = cam.orthographicSize;
+    //     float halfWidth = halfHeight * ((float)Screen.width / Screen.height);
+
+    //     float rightOfMap = width;
+    //     float cameraX = rightOfMap - halfWidth;
+
+    //     float cameraY = -height / 2f;
+    //     // float minScreenY = Screen.height - 350f;
+    //     // Vector3 bottomWorld = cam.ScreenToWorldPoint(
+    //     //     new Vector3(0f, minScreenY, cam.nearClipPlane)
+    //     // );
+
+    //     // cameraY = Mathf.Max(cameraY, bottomWorld.y + cam.orthographicSize);
+
+    //     cam.transform.position = new Vector3(cameraX, cameraY, -10f);
+    // }
+
     void CenterCameraRight(string[] map)
     {
         int width = 0;
@@ -252,20 +252,19 @@ public class LevelManager : MonoBehaviour
         Camera cam = Camera.main;
         if (cam == null) return;
 
-        float screenRatio = ((float)Screen.width / 2f) / Screen.height;
+        // prawa górna część ekranu
+        cam.rect = new Rect(0.45f, 0.25f, 0.55f, 0.75f);
+
+        float screenRatio = cam.aspect;
         float targetRatio = (float)width / height;
 
         if (targetRatio > screenRatio)
-            cam.orthographicSize = width / 2f / screenRatio;
+            cam.orthographicSize = width / (2f * screenRatio);
         else
             cam.orthographicSize = height / 2f;
 
-        float halfHeight = cam.orthographicSize;
-        float halfWidth = halfHeight * ((float)Screen.width / Screen.height);
-
-        float rightOfMap = width;
-        float cameraX = rightOfMap - halfWidth;
-
+        // ZAWSZE środek mapy
+        float cameraX = width / 2f;
         float cameraY = -height / 2f;
 
         cam.transform.position = new Vector3(cameraX, cameraY, -10f);

@@ -30,8 +30,8 @@ public class PlayerMovement : MonoBehaviour
 
         if (Finished())
         {
-            Debug.Log("Gra ukończona");
             GameManager.Instance.NextLevel();
+            AudioManager.Instance.StopNarration();
             UnityEngine.SceneManagement.SceneManager.LoadScene(1);
         }
     }

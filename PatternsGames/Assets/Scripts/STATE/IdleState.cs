@@ -25,7 +25,7 @@ public class IdleState : IPlayerState
             {
                 player.ChangeState(new RunState(player));
             }
-            else if (Input.GetKey(KeyCode.A) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D))
+            else if (Input.GetKey(KeyCode.A) || Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 player.ChangeState(new WalkState(player));
             }

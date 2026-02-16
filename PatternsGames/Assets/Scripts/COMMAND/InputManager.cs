@@ -41,6 +41,17 @@ public class InputManager : MonoBehaviour
             upBtn.gameObject.ButtonUp();
         }
 
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            upBtn.gameObject.ButtonDown();
+            upBtn.onClick.Invoke();
+        }
+
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            upBtn.gameObject.ButtonUp();
+        }
+
         // dół
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
@@ -49,6 +60,17 @@ public class InputManager : MonoBehaviour
         }
 
         if (Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            downBtn.gameObject.ButtonUp();
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            downBtn.gameObject.ButtonDown();
+            downBtn.onClick.Invoke();
+        }
+
+        if (Input.GetKeyUp(KeyCode.S))
         {
             downBtn.gameObject.ButtonUp();
         }
@@ -65,6 +87,17 @@ public class InputManager : MonoBehaviour
             leftBtn.gameObject.ButtonUp();
         }
 
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            leftBtn.gameObject.ButtonDown();
+            leftBtn.onClick.Invoke();
+        }
+
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            leftBtn.gameObject.ButtonUp();
+        }
+
         // prawo
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
@@ -77,10 +110,15 @@ public class InputManager : MonoBehaviour
             rightBtn.gameObject.ButtonUp();
         }
 
-        // powrót do menu
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.D))
         {
-            SceneManager.LoadScene(0);
+            rightBtn.gameObject.ButtonDown();
+            rightBtn.onClick.Invoke();
+        }
+
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            rightBtn.gameObject.ButtonUp();
         }
     }
 

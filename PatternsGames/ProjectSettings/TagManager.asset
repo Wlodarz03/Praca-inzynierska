@@ -22,9 +22,9 @@ TagManager:
   - Target
   - Ground
   - Player
-  - 
-  - 
-  - 
+  - PP
+  - Enemy
+  - Bullet
   - 
   - 
   - 
@@ -47,6 +47,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Turret
+    uniqueID: 1160956845
     locked: 0
   m_RenderingLayers:
   - Default

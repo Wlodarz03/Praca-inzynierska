@@ -16,7 +16,14 @@ public class Spawner : MonoBehaviour
     private float timeAlive;
     private float timeUntilObstacleSpawn;
 
+    public static Spawner Instance;
+
     private List<GameObject> activeObstacles = new List<GameObject>();
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
 
     private void Start()
     {
@@ -49,7 +56,7 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    private void ClearObstacles()
+    public void ClearObstacles()
     {
         foreach (var obj in activeObstacles)
         {

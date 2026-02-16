@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b2cc77bcc186104b818a459033536d6, type: 3}
+  m_Name: Command
+  m_EditorClassIdentifier: Assembly-CSharp::NarrationData
+  narrationName: Command
+  audioClip: {fileID: 8300000, guid: 2ab1b72487cb38848a110dc3f33548c8, type: 3}
+  subtitlesSRT: {fileID: 4900000, guid: c656ce4a8ec72524d8366ec2cd6664d4, type: 3}

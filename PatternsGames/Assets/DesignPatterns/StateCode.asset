@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ff854d03754694b84b6914280052a0, type: 3}
+  m_Name: StateCode
+  m_EditorClassIdentifier: Assembly-CSharp::DesignPatternCode
+  patternName: State
+  files:
+  - fileName: IState
+    code: "\npublic interface IState\r\n{\r\n   public void Enter()\r\n   {\r\n     
+      // code that runs when we first enter the state\r\n   }\r\n   public void Update()\r\n  
+      {\r\n      // per-frame logic, include condition to transition to a new state\r\n  
+      }\r\n   public void Exit()\r\n   {\r\n      // code that runs when we exit
+      the state\r\n   }\r\n}"
+  - fileName: StateMachine
+    code: "\npublic class StateMachine\r\n{\r\n   public IState CurrentState { get;
+      private set; }\r\n   public WalkState walkState;\r\n   public JumpState jumpState;\r\n  
+      public IdleState idleState;\n\r\n   public void Initialize(IState startingState)\r\n  
+      {\r\n      CurrentState = startingState;\r\n      startingState.Enter();\r\n  
+      }\r\n   public void TransitionTo(IState nextState)\r\n   {\r\n      CurrentState.Exit();\r\n     
+      CurrentState = nextState;\r\n      nextState.Enter();\r\n   }\r\n   public
+      void Update()\r\n   {\r\n      if (CurrentState != null)\r\n      {\r\n        
+      CurrentState.Update();\r\n      }\r\n   }\r\n}"
+  - fileName: IdleState
+    code: "\npublic class IdleState : IState\r\n{\r\n   private PlayerController
+      player;\r\n   public IdleState(PlayerController player)\r\n   {\r\n      this.player
+      = player;\r\n   }\r\n   public void Enter()\r\n   {\r\n      // code that runs
+      when we first enter the state\r\n   }\r\n   public void Update()\r\n   {\r\n     
+      // Here we add logic to detect if the conditions exist to\r\n      // transition
+      to another state\r\n      \u2026\r\n   }\r\n   public void Exit()\r\n   {\r\n     
+      // code that runs when we exit the state\r\n   }\r\n}"

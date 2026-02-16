@@ -1,0 +1,203 @@
+1
+00:00:00,310 --> 00:00:03,150
+Game Overview: In this game, the player controls
+
+2
+00:00:03,150 --> 00:00:05,050
+a thief whose goal is to reach the
+
+3
+00:00:05,050 --> 00:00:07,109
+top right corner of a maze without being
+
+4
+00:00:07,109 --> 00:00:07,510
+caught.
+
+5
+00:00:08,450 --> 00:00:11,090
+Guards patrol the maze and react dynamically to
+
+6
+00:00:11,090 --> 00:00:11,970
+the player's actions.
+
+7
+00:00:12,910 --> 00:00:14,950
+Both the player and the enemies are driven
+
+8
+00:00:14,950 --> 00:00:16,050
+by state machines.
+
+9
+00:00:17,250 --> 00:00:21,170
+Player States The player character has three movement
+
+10
+00:00:21,170 --> 00:00:21,610
+states.
+
+11
+00:00:22,430 --> 00:00:25,170
+Standing, idle, walking, and running.
+
+12
+00:00:25,780 --> 00:00:28,590
+When no movement input is detected, the character
+
+13
+00:00:28,590 --> 00:00:30,130
+remains in the standing state.
+
+14
+00:00:31,110 --> 00:00:34,210
+Pressing movement keys switches the character to walking.
+
+15
+00:00:35,010 --> 00:00:37,670
+Holding the shift key transitions the character into
+
+16
+00:00:37,670 --> 00:00:38,450
+the running state.
+
+17
+00:00:39,250 --> 00:00:40,770
+While the player is in the running state,
+
+18
+00:00:41,270 --> 00:00:42,670
+stamina gradually decreases.
+
+19
+00:00:43,690 --> 00:00:47,090
+When stamina is depleted, the character automatically transitions
+
+20
+00:00:47,090 --> 00:00:48,590
+back to the walking state.
+
+21
+00:00:49,290 --> 00:00:51,290
+This introduces a strategic decision.
+
+22
+00:00:52,030 --> 00:00:54,750
+Running allows faster movement, but only for a
+
+23
+00:00:54,750 --> 00:00:55,870
+limited amount of time.
+
+24
+00:00:56,830 --> 00:00:59,310
+Guard States The guards in the maze are
+
+25
+00:00:59,310 --> 00:01:01,550
+also implemented using the state pattern.
+
+26
+00:01:02,470 --> 00:01:05,110
+Each guard operates independently and can be in
+
+27
+00:01:05,110 --> 00:01:06,170
+one of three states.
+
+28
+00:01:07,010 --> 00:01:09,310
+In the patrol state, guards move through the
+
+29
+00:01:09,310 --> 00:01:12,790
+maze along predefined paths, unaware of the player's
+
+30
+00:01:12,790 --> 00:01:13,190
+presence.
+
+31
+00:01:13,970 --> 00:01:16,250
+When a guard detects the player, it transitions
+
+32
+00:01:16,250 --> 00:01:17,370
+into the alarm state.
+
+33
+00:01:18,050 --> 00:01:21,470
+This state provides immediate visual feedback, shown as
+
+34
+00:01:21,470 --> 00:01:24,610
+an exclamation mark above the guard, indicating that
+
+35
+00:01:24,610 --> 00:01:25,790
+the player has been spotted.
+
+36
+00:01:26,790 --> 00:01:29,150
+After raising the alarm, the guard enters the
+
+37
+00:01:29,150 --> 00:01:29,690
+chase state.
+
+38
+00:01:30,490 --> 00:01:33,130
+In this state, the guard actively pursues the
+
+39
+00:01:33,130 --> 00:01:34,890
+player for a limited amount of time.
+
+40
+00:01:35,730 --> 00:01:38,610
+If the chase timer expires, it transitions back
+
+41
+00:01:38,610 --> 00:01:39,570
+to the patrol state.
+
+42
+00:01:40,590 --> 00:01:43,930
+State Transitions Logic Each state defines its own
+
+43
+00:01:43,930 --> 00:01:45,550
+behavior through three methods.
+
+44
+00:01:46,230 --> 00:01:48,310
+Enter, Update, and Exit.
+
+45
+00:01:49,050 --> 00:01:52,210
+The Enter method initializes the state, the Update
+
+46
+00:01:52,210 --> 00:01:55,050
+method runs every frame and checks for conditions
+
+47
+00:01:55,050 --> 00:01:58,330
+that trigger transitions, and the Exit method handles
+
+48
+00:01:58,330 --> 00:02:00,830
+cleanup before switching to another state.
+
+49
+00:02:01,250 --> 00:02:05,090
+A central state machine manages these transitions, ensuring
+
+50
+00:02:05,090 --> 00:02:07,410
+that only one state is active at any
+
+51
+00:02:07,410 --> 00:02:08,050
+given time.

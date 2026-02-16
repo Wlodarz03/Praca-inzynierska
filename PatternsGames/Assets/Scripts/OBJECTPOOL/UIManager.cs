@@ -1,17 +1,24 @@
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI scoreUI;
+    [Header("GameOver UI Elements")]
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] private TextMeshProUGUI gameOverScoreUI;
     [SerializeField] private TextMeshProUGUI gameOverHighscoreUI;
+
+    [Header("In-Game UI Elements")]
+    [SerializeField] private TextMeshProUGUI scoreUI;
     [SerializeField] private TextMeshProUGUI poolListUI;
+
+    Spawner spawner;
     GameManagerOP gm;
     private void Start()
     {
+        spawner = Spawner.Instance;
         gm = GameManagerOP.Instance;
         gm.onGameOver.AddListener(ActivateGameOverUI);
     }
@@ -30,6 +37,13 @@ public class UIManager : MonoBehaviour
         gameOverHighscoreUI.text = "Highscore: " + gm.PreetyScore(gm.data.highscore);
     }
 
+    public void ResetButtonHandler()
+    {
+        Time.timeScale = 1f;
+        spawner.ClearObstacles();
+        gm.StartGame();
+    }
+
     private void Update()
     {
         scoreUI.text = gm.PreetyScore(gm.currentScore); 
@@ -39,6 +53,6 @@ public class UIManager : MonoBehaviour
             poolListUI.text = "OBJECT POOL:\n";
             var inactive = ObjectPool.Instance.GetInactiveObjectNames();
             poolListUI.text += inactive.Count > 0 ? string.Join("\n", inactive) : "pool empty";
-        } 
+        }
     }
 }

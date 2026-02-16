@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ff854d03754694b84b6914280052a0, type: 3}
+  m_Name: Decorator
+  m_EditorClassIdentifier: Assembly-CSharp::DesignPatternCode
+  patternName: Decorator
+  files:
+  - fileName: Turret
+    code: "using UnityEngine;\r\n\r\npublic abstract class Turret : MonoBehaviour\r\n{\r\n   
+      public abstract float GetDamage();\r\n    public abstract float GetFireRate();\n   
+      public abstract float GetRange();\r\n    public abstract int GetCost();\r\n\r\n   
+      public virtual void Shoot()\r\n    {\r\n        Debug.Log($\"Shooting: DMG={GetDamage()},
+      FireRate={GetFireRate()}. Range={GetRange()}\");\r\n    }\r\n}\r\n"
+  - fileName: BaseTurret
+    code: "using UnityEngine;\r\n\r\npublic class BaseTurret : Turret\r\n{\r\n   
+      public override float GetDamage() => 10f;\r\n    public override float GetFireRate()
+      => 1f;\r\n    public override int GetCost() => 50;\r\n}\r\n"
+  - fileName: TurretDecorator
+    code: "using UnityEngine;\r\n\r\npublic abstract class TurretDecorator : Turret\r\n{\r\n   
+      protected Turret turret;\r\n\r\n    public void Initialize(Turret turretToDecorate)\r\n   
+      {\r\n        turret = turretToDecorate;\r\n    }\r\n}\r\n"
+  - fileName: MGDecorator
+    code: "using UnityEngine;\r\n\r\npublic class MachineGunDecorator : TurretDecorator\r\n{\r\n   
+      public override float GetFireRate()\r\n    {\r\n        return turret.GetFireRate()
+      * 3f;\r\n    }\r\n\r\n    public override int GetCost()\r\n    {\r\n       
+      return turret.GetCost() + 100;\r\n    }\r\n}\r\n\r\n"
+  - fileName: SniperDecorator
+    code: "using UnityEngine;\r\n\r\npublic class SniperDecorator : TurretDecorator\r\n{\n   
+      public override float GetRange(){\n\treturn turret.GetRange() * 2f;\n    }\r\n   
+      public override int GetCost()\r\n    {\r\n        return turret.GetCost() +
+      150;\r\n    }\r\n}\r\n\r\n\r\n"

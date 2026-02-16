@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ff854d03754694b84b6914280052a0, type: 3}
+  m_Name: ObjectPool
+  m_EditorClassIdentifier: Assembly-CSharp::DesignPatternCode
+  patternName: ObjectPool
+  files:
+  - fileName: ObjectPool
+    code: "\npublic class ObjectPool : MonoBehaviour\r\n{\r\n   [SerializeField]
+      private uint initPoolSize;\r\n   [SerializeField] private PooledObject objectToPool;\r\n  
+      // store the pooled objects in a collection\r\n   private Stack<PooledObject>
+      stack;\r\n   private void Start()\r\n   {\r\n      SetupPool();\r\n   }\r\n  
+      // creates the pool (invoke when the lag is not noticeable)\r\n   private void
+      SetupPool()\r\n   {\r\n      stack = new Stack<PooledObject>();\r\n      PooledObject
+      instance = null;\r\n      for (int i = 0; i < initPoolSize; i++)\r\n      {\r\n        
+      instance = Instantiate(objectToPool);\r\n         instance.Pool = this;\r\n        
+      instance.gameObject.SetActive(false);\r\n         stack.Push(instance);\n     
+      }\r\n   }\n\n   // returns the first active GameObject from the pool\r\n  
+      public PooledObject GetPooledObject()\r\n   {\r\n      // if the pool is not
+      large enough, instantiate a new PooledObjects\r\n      if (stack.Count == 0)\r\n     
+      {\r\n         PooledObject newInstance = Instantiate(objectToPool);\r\n        
+      newInstance.Pool = this;\r\n         return newInstance;\r\n      }\r\n     
+      // otherwise, just grab the next one from the list\r\n      PooledObject nextInstance
+      = stack.Pop();\r\n      nextInstance.gameObject.SetActive(true);\r\n      return
+      nextInstance;\r\n   }\r\n   public void ReturnToPool(PooledObject pooledObject)\r\n  
+      {\r\n      stack.Push(pooledObject);\r\n      pooledObject.gameObject.SetActive(false);\r\n  
+      }\r\n}"
+  - fileName: PooledObject
+    code: "\npublic class PooledObject : MonoBehaviour\r\n{\r\n   private ObjectPool
+      pool;\r\n   public ObjectPool Pool { get => pool; set => pool = value; }\r\n  
+      public void Release()\r\n   {\r\n      pool.ReturnToPool(this);\r\n   }\r\n}"

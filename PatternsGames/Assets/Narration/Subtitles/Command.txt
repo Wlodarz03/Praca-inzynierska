@@ -1,0 +1,88 @@
+1
+00:00:00,000 --> 00:00:06,640
+Game Overview. This game is a classic so-kebon style puzzle game. The player's goal is to push
+
+2
+00:00:06,640 --> 00:00:12,400
+all crates onto their designated target tiles. The player can only move crates by pushing them,
+
+3
+00:00:12,400 --> 00:00:15,120
+which means every movement must be carefully planned.
+
+4
+00:00:16,640 --> 00:00:22,640
+Player Actions as commands. Every player action in this game is implemented using the command
+
+5
+00:00:22,640 --> 00:00:28,720
+design pattern. Instead of moving the player or crates directly, each movement is wrapped inside a
+
+6
+00:00:28,720 --> 00:00:35,200
+command object. A command represents a single action, such as moving the player or pushing a
+
+7
+00:00:35,200 --> 00:00:40,480
+crate. This object knows how to execute the action and how to undo it if needed.
+
+8
+00:00:41,840 --> 00:00:48,640
+Command Interface. All commands implement a common interface. Each command defines two core
+
+9
+00:00:48,640 --> 00:00:55,040
+operations, execute and undo. This ensures that every action in the game can be reversed in a
+
+10
+00:00:55,040 --> 00:01:01,280
+consistent way. If executing a command does not change the game state, for example, when a move
+
+11
+00:01:01,280 --> 00:01:08,640
+is blocked, the command is not added to the history. Command History and Invoker. A central
+
+12
+00:01:08,640 --> 00:01:13,520
+command invoker is responsible for executing commands and managing the command history.
+
+13
+00:01:14,400 --> 00:01:20,240
+Executed commands are stored in a fixed size history buffer, which keeps the last 20 actions
+
+14
+00:01:20,240 --> 00:01:26,160
+performed by the player. This buffer works like a circular list, allowing old commands to be
+
+15
+00:01:26,160 --> 00:01:34,080
+discarded as new ones are added. Undo and redo functionality. The player can use Undo and redo
+
+16
+00:01:34,080 --> 00:01:41,520
+at any time. Undo reverses the most recent command, while Redo reexecutes a previously undone action.
+
+17
+00:01:42,400 --> 00:01:48,560
+When the player performs a new action after using Undo, all future commands are not available anymore.
+
+18
+00:01:49,040 --> 00:01:55,680
+Visual Command History. To make the system transparent to the player, the game displays a
+
+19
+00:01:55,680 --> 00:02:01,840
+visual representation of the command history on screen. Up to 20 recent commands are shown,
+
+20
+00:02:01,840 --> 00:02:07,440
+with arrows indicating the most recently executed command and the oldest command still stored in
+
+21
+00:02:07,440 --> 00:02:13,920
+the history. This visualization helps players understand their actions and plan future moves more
+
+22
+00:02:13,920 --> 00:02:14,560
+effectively.
+

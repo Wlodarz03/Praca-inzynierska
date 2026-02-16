@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -6,14 +7,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float moveSpeed = 7f;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Weapon weapon;
+    [SerializeField] private GameObject levelUpUI;
     private float fireRate = 0.5f;
     public float damage = 1f;
     private int killsToLevelUp = 10;
     private int killCount = 0;
 
+    private GameManagerS gm;
     private float fireTimer;
     private Vector2 moveDirection;
     private Vector2 mousePosition;
+    private float LevelUpTimer = 1.5f;
+
+    void Start()
+    {
+        gm = FindFirstObjectByType<GameManagerS>();
+    }
 
     void OnEnable()
     {
@@ -29,6 +38,16 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         float moveX = Input.GetAxisRaw("Horizontal");
+
+        if (levelUpUI.activeSelf)
+        {
+            LevelUpTimer -= Time.deltaTime;
+            if (LevelUpTimer <= 0f)
+            {
+                levelUpUI.SetActive(false);
+                LevelUpTimer = 1.5f;
+            }
+        }
 
         if (Input.GetMouseButton(0) && fireTimer <= 0f)
         {
@@ -51,6 +70,10 @@ public class PlayerController : MonoBehaviour
         Vector2 aimDirection = mousePosition - rb.position;
         float aimAngle = Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
         rb.rotation = aimAngle;
+
+        Vector2 clampedPosition = rb.position;
+        clampedPosition.x = Mathf.Clamp(clampedPosition.x, -Camera.main.orthographicSize * Camera.main.aspect + 0.5f, Camera.main.orthographicSize * Camera.main.aspect - 0.5f);
+        rb.position = clampedPosition;
     }
 
     private void OnEnemyKilled()
@@ -60,14 +83,32 @@ public class PlayerController : MonoBehaviour
         if (killCount % killsToLevelUp == 0)
         {
             fireRate = Mathf.Max(0.1f, fireRate - 0.02f); // szybsze strzelanie
-            damage += 0.2f;                               // większe obrażenia
+            damage += 0.2f;
+            levelUpUI.SetActive(true);
             Debug.Log($"Level up! FireRate: {fireRate}, Damage: {damage}");
         }
 
-        if (killCount % 20 == 0)
+        if (killCount % 30 == 0)
         {
-            GameManagerS.Instance.enemiesPerWave += 1;
+            gm.enemiesPerWave += 1;
             moveSpeed += 0.5f;
         }
+        if (killCount % 50 == 0)
+        {
+            gm.spawnInterval -= 1;
+        }
+    }
+
+    public void ResetAtttributes()
+    {
+        fireRate = 0.5f;
+        damage = 1f;
+        moveSpeed = 7f;
+        killCount = 0;
+    }
+
+    public int GetKills()
+    {
+        return killCount;
     }
 }

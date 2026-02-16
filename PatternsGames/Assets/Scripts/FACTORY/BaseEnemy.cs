@@ -9,11 +9,20 @@ public abstract class BaseEnemy : MonoBehaviour, IEnemy
     protected Transform target;
     protected Rigidbody2D rb;
     public EnemyFactory enemyFactory;
+    private GameManagerS gm;
+    public bool onBelt;
 
     public abstract void Initialize();
 
+    void Awake()
+    {
+        gm = FindFirstObjectByType<GameManagerS>();
+    }
+
     public void Update()
     {
+        if (onBelt) return;
+
         if (!target)
         {
             GetTarget();
@@ -26,12 +35,21 @@ public abstract class BaseEnemy : MonoBehaviour, IEnemy
         if (health <= 0)
         {
             Die();
+            return;
+        }
+        if (transform.position.y < -5f)
+        {
+            enemyFactory.ReturnToPool(EnemyType, gameObject);
+            return;
         }
     }
 
     private void FixedUpdate()
     {
-        rb.linearVelocity = transform.up * moveSpeed;
+        if (!onBelt)
+        {
+            rb.linearVelocity = transform.up * moveSpeed;
+        }
     }
 
     public void Die()
@@ -67,17 +85,15 @@ public abstract class BaseEnemy : MonoBehaviour, IEnemy
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("Bullet") && !onBelt)
         {
             var player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
             TakeDamage(player.damage);
-            Debug.Log($"Enemy took {player.damage} damage. Remaining health: {health}");
         }
         else if (collision.gameObject.CompareTag("Player"))
         {
-            GameManagerS.Instance.StopSpawning();
+            gm.EndGame();
             Destroy(collision.gameObject);
-            
         }
     }
 }

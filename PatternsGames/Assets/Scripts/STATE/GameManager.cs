@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Application.targetFrameRate = 60;
-        QualitySettings.vSyncCount = 0;
         Time.timeScale = 1f;
         if (Instance == null)
         {
@@ -28,10 +26,10 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            SceneManager.LoadScene(0);
-        }
+        // if (Input.GetKeyDown(KeyCode.Escape))
+        // {
+        //     SceneManager.LoadScene(0);
+        // }
     }
 
     public void NextLevel()
@@ -43,6 +41,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         isPlaying = false;
+        AudioManager.Instance.StopNarration();
         onGameOver.Invoke();
         Time.timeScale = 0f;
     }

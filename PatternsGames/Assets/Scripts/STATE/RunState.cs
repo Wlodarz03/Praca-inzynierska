@@ -25,6 +25,10 @@ public class RunState : IPlayerState
         if (Input.GetKey(KeyCode.D)) horizontal = 1f;
         if (Input.GetKey(KeyCode.W)) vertical = 1f;
         if (Input.GetKey(KeyCode.S)) vertical = -1f;
+        if (Input.GetKey(KeyCode.LeftArrow)) horizontal = -1f;
+        if (Input.GetKey(KeyCode.RightArrow)) horizontal = 1f;
+        if (Input.GetKey(KeyCode.UpArrow)) vertical = 1f;
+        if (Input.GetKey(KeyCode.DownArrow)) vertical = -1f;
 
         Vector2 input = new Vector2(horizontal, vertical);
         player.inputDirection = input;
@@ -76,7 +80,8 @@ public class RunState : IPlayerState
     }
     private bool AnyMovementKeyHold()
     {
-        return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
+        return Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) ||
+               Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.RightArrow);
     }
     private void UpdateSprite(Vector2 dir)
     {
