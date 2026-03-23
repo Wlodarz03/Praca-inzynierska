@@ -1,3 +1,4 @@
+using TMPro.Examples;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -54,5 +55,25 @@ public class ButtonsHandler : MonoBehaviour
             mainCamera.transform.position = new Vector3(0, -1.5f, -10);
             AudioManager.Instance.PlayNarration(narration);
         }
+    }
+
+    public void PauseGameButton(){
+        if (Time.timeScale == 1f)
+        {
+            Time.timeScale = 0f;
+        }
+        
+    }
+
+    public void ResumeGameButton(){
+        if (Time.timeScale == 0f)
+        {
+            Time.timeScale = 1f;
+        }
+    }
+
+    public void ToggleNarration()
+    {
+        GameManager.Instance.ToggleNarration();
     }
 }

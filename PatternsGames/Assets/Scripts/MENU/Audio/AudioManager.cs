@@ -50,6 +50,11 @@ public class AudioManager : MonoBehaviour
         OnNarrationStarted?.Invoke(narration);
     }
 
+    public void SetNarrationVolume(float volume)
+    {
+        narratorSource.volume = volume;
+    }
+
     public void PauseNarration() => narratorSource.Pause();
     public void ResumeNarration() => narratorSource.UnPause();
 

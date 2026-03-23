@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ff854d03754694b84b6914280052a0, type: 3}
+  m_Name: Singleton
+  m_EditorClassIdentifier: Assembly-CSharp::DesignPatternCode
+  patternName: Singleton
+  files:
+  - fileName: SimpleSingleton
+    code: "using UnityEngine;\n\r\npublic class SimpleSingleton : MonoBehaviour\r\n{\r\n 
+      public static SimpleSingleton Instance;\n\r\n  private void Awake()\r\n  {\r\n   
+      if (Instance == null)\r\n    {\r\n      Instance = this;\r\n    }\r\n    else\r\n   
+      {\r\n      Destroy(gameObject);\r\n    }\r\n  }\r\n}"
+  - fileName: Singleton
+    code: "using UnityEngine;\n\npublic class Singleton : MonoBehaviour\r\n{\r\n 
+      private static Singleton instance;\n\r\n  public static Singleton Instance\r\n 
+      {\r\n    get\r\n    {\r\n      if (instance == null)\r\n      {\r\n       
+      SetupInstance();\r\n      }\r\n      return instance;\r\n    }\r\n  }\n\r\n 
+      private void Awake()\r\n  {\r\n    if (instance == null)\r\n    {\r\n     
+      instance = this;\r\n      DontDestroyOnLoad(this.gameObject);\r\n    }\r\n   
+      else\r\n    {\r\n      Destroy(gameObject);\r\n    }\r\n  }\n\r\n  private
+      static void SetupInstance()\r\n  {\r\n    instance = FindObjectOfType<Singleton>();\r\n   
+      if (instance == null)\r\n    {\r\n      GameObject gameObj = new GameObject();\r\n     
+      gameObj.name = \"Singleton\";\r\n      instance = gameObj.AddComponent<Singleton>();\r\n     
+      DontDestroyOnLoad(gameObj);\r\n    }\r\n}\n\n"

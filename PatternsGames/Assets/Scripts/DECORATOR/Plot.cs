@@ -82,6 +82,7 @@ public class Plot : MonoBehaviour
                 Destroy(towerToBuild);
                 return;
             }
+            TowerDefenseManager.Instance.OnCellClicked();
             TowerDefenseManager.Instance.SpendCurrency(cost);
             towerToBuild.transform.position = transform.position;
             tower = towerToBuild;

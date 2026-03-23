@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     public TextMeshProUGUI stateText;
     private IPlayerState currentState;
 
+    [SerializeField] private GameObject narrationPanel;
+
     void Start()
     {
         tileSize = mazeMaker.tileSize;
@@ -22,6 +24,13 @@ public class PlayerMovement : MonoBehaviour
         transform.position = new Vector2(1f * tileSize, 1f * tileSize); 
 
         ChangeState(new IdleState(this));
+
+        if (GameManager.Instance.isNarrationPlaying)
+        {
+            narrationPanel.SetActive(true);
+            Debug.Log("Narration panel activated");
+        }
+
     }
 
     void Update()
@@ -31,7 +40,9 @@ public class PlayerMovement : MonoBehaviour
         if (Finished())
         {
             GameManager.Instance.NextLevel();
-            AudioManager.Instance.StopNarration();
+
+            //AudioManager.Instance.StopNarration();
+            
             UnityEngine.SceneManagement.SceneManager.LoadScene(1);
         }
     }
@@ -50,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool Finished()
     {
+        
         Vector2 pos = transform.position;
 
         int x = Mathf.RoundToInt(pos.x / mazeMaker.tileSize);

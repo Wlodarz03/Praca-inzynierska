@@ -1,5 +1,4 @@
 using UnityEngine;
-using System;
 using UnityEditor;
 
 public class Turret : MonoBehaviour
@@ -126,9 +125,11 @@ public class Turret : MonoBehaviour
         }
     }
 
+    #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
         Handles.color = Color.cyan;
         Handles.DrawWireDisc(transform.position, transform.forward, turretLogic.Range);
     }
+    #endif
 }

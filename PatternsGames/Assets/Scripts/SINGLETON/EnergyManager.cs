@@ -5,10 +5,10 @@ using UnityEngine.UI;
 public class EnergyManager : MonoBehaviour
 {
     public static EnergyManager instance;
-
     private int energy;
-    private float energyRegenTime = 3f;
+    private float energyRegenTime = 4f;
     private float timeSinceLastRegen = 0f;
+    private int energyValue = 5;
 
     [SerializeField] private Scrollbar energyUI;
     [SerializeField] private GameObject energryHandle;
@@ -33,10 +33,22 @@ public class EnergyManager : MonoBehaviour
 
     void Update()
     {
+        if (energy <= 30)
+        {
+            energyValue = 5;
+        }
+        else if (energy <= 70)
+        {
+            energyValue = 4;
+        }
+        else
+        {
+            energyValue = 3;
+        }
         timeSinceLastRegen += Time.deltaTime;
         if (timeSinceLastRegen >= energyRegenTime && energy < 100)
         {
-            AddEnergy(5);
+            AddEnergy(energyValue);
             timeSinceLastRegen = 0f;
         }
     }
@@ -76,7 +88,7 @@ public class EnergyManager : MonoBehaviour
         ChangeEnergyCount();
     }
 
-    public void SpendEnergy(int amount)
+    public bool SpendEnergy(int amount)
     {
         if (energy >= amount)
         {
@@ -85,10 +97,12 @@ public class EnergyManager : MonoBehaviour
             energyUI.size = energy / 100f;
             ChangeColor();
             ChangeEnergyCount();
+            return true;
         }
         else
         {
             Debug.Log("Not enough energy to spend! Current energy: " + energy);
+            return false;
         }
     }
 }

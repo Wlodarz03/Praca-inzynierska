@@ -18,8 +18,8 @@ MonoBehaviour:
     code: "using UnityEngine;\r\n\r\npublic abstract class Turret : MonoBehaviour\r\n{\r\n   
       public abstract float GetDamage();\r\n    public abstract float GetFireRate();\n   
       public abstract float GetRange();\r\n    public abstract int GetCost();\r\n\r\n   
-      public virtual void Shoot()\r\n    {\r\n        Debug.Log($\"Shooting: DMG={GetDamage()},
-      FireRate={GetFireRate()}. Range={GetRange()}\");\r\n    }\r\n}\r\n"
+      public virtual void Shoot()\r\n    {\r\n        Debug.Log($\"Shooting: DMG={GetDamage()},\n\tFireRate={GetFireRate()}.
+      Range={GetRange()}\");\r\n    }\r\n}\r\n"
   - fileName: BaseTurret
     code: "using UnityEngine;\r\n\r\npublic class BaseTurret : Turret\r\n{\r\n   
       public override float GetDamage() => 10f;\r\n    public override float GetFireRate()

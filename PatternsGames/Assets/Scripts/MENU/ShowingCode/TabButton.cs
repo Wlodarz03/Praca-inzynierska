@@ -7,13 +7,13 @@ public class TabButton : MonoBehaviour
 {
     [SerializeField] private TMP_Text label;
     private int index;
-    private float alfa = 0.5019608f;
+    //private float alfa = 0.5019608f;
     private CodePanelManager manager;
 
-    public float GetAlfa()
-    {
-        return alfa;
-    }
+    // public float GetAlfa()
+    // {
+    //     return alfa;
+    // }
 
     public void Init(string fileName, int index, CodePanelManager manager)
     {

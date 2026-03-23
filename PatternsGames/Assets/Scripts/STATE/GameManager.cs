@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,7 +10,10 @@ public class GameManager : MonoBehaviour
     public int currentLevel = 1;
     public int score = 0;
     public bool isPlaying;
+    public bool isNarrationPlaying = false;
     public UnityEvent onGameOver = new UnityEvent();
+    private Button play;
+    private Button pause;
 
     private void Awake()
     {
@@ -22,14 +27,40 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+    }
+
+    public void DestroyGameManager()
+    {
+        Destroy(gameObject);
+    }
+
+    void Start()
+    {
+        play = GameObject.Find("Play").GetComponent<Button>();
+        pause = GameObject.Find("Pause").GetComponent<Button>();
+
+        StartNewGame();
     }
 
     private void Update()
     {
-        // if (Input.GetKeyDown(KeyCode.Escape))
-        // {
-        //     SceneManager.LoadScene(0);
-        // }
+        if (play == null || pause == null)
+        {
+            play = GameObject.Find("Play").GetComponent<Button>();
+            pause = GameObject.Find("Pause").GetComponent<Button>();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0f)
+        {
+            play.gameObject.ButtonDown();
+            play.onClick.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
+        {
+            pause.gameObject.ButtonDown();
+            pause.onClick.Invoke();
+        }
     }
 
     public void NextLevel()
@@ -41,6 +72,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         isPlaying = false;
+        ToggleNarration();
         AudioManager.Instance.StopNarration();
         onGameOver.Invoke();
         Time.timeScale = 0f;
@@ -52,6 +84,11 @@ public class GameManager : MonoBehaviour
         score = 0;
         currentLevel = 1;
         Time.timeScale = 1f;
+    }
+
+    public void ToggleNarration()
+    {
+        isNarrationPlaying = !isNarrationPlaying;
     }
 
 }

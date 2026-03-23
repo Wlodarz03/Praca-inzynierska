@@ -1,0 +1,152 @@
+1
+00:00:00,000 --> 00:00:02,000
+Game Overview
+
+2
+00:00:02,000 --> 00:00:08,000
+This game is a simple time management experience, where the player must keep four different animals entertained.
+
+3
+00:00:08,000 --> 00:00:13,000
+Each animal has its own humor meter that slowly decreases over time.
+
+4
+00:00:13,000 --> 00:00:19,000
+The player can perform actions to improve the animal's mood, but every action costs energy.
+
+5
+00:00:19,000 --> 00:00:24,000
+The main objective is to keep all animals happy for as long as possible.
+
+6
+00:00:24,000 --> 00:00:28,000
+If any animal's humor reaches zero, the game ends.
+
+7
+00:00:28,000 --> 00:00:32,000
+Each animal has two unique actions that the player can use.
+
+8
+00:00:32,000 --> 00:00:39,000
+These actions increase humor and sometimes trigger additional effects, but they always consume energy.
+
+9
+00:00:39,000 --> 00:00:48,000
+Because the player must manage multiple animals at the same time, deciding when and where to spend energy becomes the central gameplay challenge.
+
+10
+00:00:48,000 --> 00:00:51,000
+Every minute, a random negative event occurs.
+
+11
+00:00:51,000 --> 00:00:57,000
+These events may reduce the player's energy or decrease the humor of all animals.
+
+12
+00:00:57,000 --> 00:01:02,000
+This forces the player to constantly react and manage resources carefully.
+
+13
+00:01:02,000 --> 00:01:04,000
+Energy System
+
+14
+00:01:04,000 --> 00:01:07,000
+All animals share the same pool of energy.
+
+15
+00:01:07,000 --> 00:01:13,000
+Whenever the player performs an action on any animal, energy is taken from the shared resource.
+
+16
+00:01:13,000 --> 00:01:20,000
+Energy slowly regenerates over time, but it is also constantly consumed when the player performs actions.
+
+17
+00:01:20,000 --> 00:01:24,000
+The energy system is implemented using the Singleton pattern.
+
+18
+00:01:24,000 --> 00:01:29,000
+This means there is only one instance of the energy manager in the entire game.
+
+19
+00:01:29,000 --> 00:01:38,000
+Because there is only a single energy manager, every animal interacts with the same object when spending or restoring energy.
+
+20
+00:01:38,000 --> 00:01:45,000
+This guarantees that all actions affect the same global energy value, ensuring consistent game logic.
+
+21
+00:01:45,000 --> 00:01:53,000
+Singleton Pattern, the Singleton Pattern, ensures that a class has only one instance and provides a global point of access to it.
+
+22
+00:01:53,000 --> 00:01:58,000
+In this game, the energy system is implemented as a Singleton.
+
+23
+00:01:58,000 --> 00:02:03,000
+All animals reference the same energy manager instance when performing their actions.
+
+24
+00:02:03,000 --> 00:02:09,000
+This approach prevents multiple independent energy pools from being created accidentally.
+
+25
+00:02:09,000 --> 00:02:15,000
+Instead, the game maintains one central energy resource that all gameplay systems rely on.
+
+26
+00:02:15,000 --> 00:02:22,000
+By using the Singleton pattern, the energy system becomes easy to access from different parts of the game
+
+27
+00:02:22,000 --> 00:02:26,000
+while maintaining strict control over the resource.
+
+28
+00:02:26,000 --> 00:02:32,000
+Visualization, the game visually demonstrates the Singleton pattern through the shared energy mechanic.
+
+29
+00:02:32,000 --> 00:02:39,000
+At the top of the screen, the player can see an energy bar that displays the current amount of available energy.
+
+30
+00:02:39,000 --> 00:02:45,000
+This bar represents the single shared energy resource used by all animals.
+
+31
+00:02:45,000 --> 00:02:52,000
+On the left side of the screen, the player can see a history of the five most recent actions that consumed energy.
+
+32
+00:02:52,000 --> 00:03:00,000
+This interface element shows which animal performed the action, what type of action it was, and how much energy was spent.
+
+33
+00:03:00,000 --> 00:03:07,000
+It clearly illustrates that different animals and different actions are all drawing energy from the same shared resource.
+
+34
+00:03:07,000 --> 00:03:14,000
+Additionally, when the player hovers the mouse over an action button, a description appears explaining what the action does
+
+35
+00:03:14,000 --> 00:03:17,000
+and how much energy it costs.
+
+36
+00:03:17,000 --> 00:03:23,000
+Hovering over an animal also displays information about that specific animal and its behavior.
+
+37
+00:03:23,000 --> 00:03:28,000
+These visual elements help the player better understand both the gameplay mechanics
+
+38
+00:03:28,000 --> 00:03:31,000
+and how the Singleton pattern functions within the system.
+

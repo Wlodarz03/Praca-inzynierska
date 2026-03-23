@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-// using UnityEngine.UIElements;
+using UnityEngine.Rendering;
 
 public class NarrationUIController : MonoBehaviour
 {
@@ -13,6 +13,8 @@ public class NarrationUIController : MonoBehaviour
     [SerializeField] private TMP_Text totalTimeText;
     [SerializeField] private Sprite[] iconsButton;
     [SerializeField] private Button playPauseButton;
+    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private Button volumeIcon;
 
     private AudioManager audioManager;
     private SubtitlePlayer subtitlePlayer;
@@ -34,6 +36,10 @@ public class NarrationUIController : MonoBehaviour
             audioManager = AudioManager.Instance;
         audioManager.OnNarrationStarted.AddListener(OnNarrationStarted);
         audioManager.OnNarrationStopped.AddListener(OnNarrationStopped);
+        if (audioManager.CurrentNarration != null)
+        {
+            OnNarrationStarted(audioManager.CurrentNarration);
+        }
     }
 
     private void OnDisable()
@@ -45,6 +51,20 @@ public class NarrationUIController : MonoBehaviour
     public void OnSliderDragStart()
     {
         isDraggingSlider = true;
+    }
+
+    public void OnVolumeValueChanged()
+    {
+        if (volumeSlider.value <= 0.01f)
+        {
+            volumeIcon.GetComponent<Image>().sprite = iconsButton[2];
+        }
+        else
+        {
+            volumeIcon.GetComponent<Image>().sprite = iconsButton[3];
+        }
+            
+        audioManager.SetNarrationVolume(volumeSlider.value);
     }
 
     public void OnSliderDragEnd()
@@ -62,7 +82,7 @@ public class NarrationUIController : MonoBehaviour
 
         if (isDraggingSlider)
             return;
-
+        
         float time = audioManager.GetNarrationTime();
         float length = audioManager.GetNarrationLength();
 
@@ -104,6 +124,20 @@ public class NarrationUIController : MonoBehaviour
         }
 
         isPaused = !isPaused;
+    }
+
+    public void ToggleMute()
+    {
+        if (volumeSlider.value > 0.01f)
+        {
+            volumeSlider.value = 0f;
+            volumeIcon.GetComponent<Image>().sprite = iconsButton[2];
+        }
+        else
+        {
+            volumeSlider.value = 1f;
+            volumeIcon.GetComponent<Image>().sprite = iconsButton[3];
+        }
     }
 
     public void Forward5Seconds()

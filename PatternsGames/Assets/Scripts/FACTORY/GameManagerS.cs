@@ -1,12 +1,15 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManagerS : MonoBehaviour
 {
     [SerializeField] private GameObject GameOverUI;
     [SerializeField] private GameObject crosshair;
     [SerializeField] private TextMeshProUGUI Score;
+    [SerializeField] private Button play;
+    [SerializeField] private Button pause;
     private EnemyFactory enemyFactory;
 
     [Header("Enemy Spawning Settings")]
@@ -20,6 +23,20 @@ public class GameManagerS : MonoBehaviour
     void Awake()
     {
         enemyFactory = EnemyFactory.Instance;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0f)
+        {
+            play.gameObject.ButtonDown();
+            play.onClick.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
+        {
+            pause.gameObject.ButtonDown();
+            pause.onClick.Invoke();
+        }
     }
 
     void Start()
@@ -56,17 +73,6 @@ public class GameManagerS : MonoBehaviour
         StopAllCoroutines();
     }
 
-    // public void StartNewGame()
-    // {
-    //     crosshair.SetActive(true);
-    //     Cursor.visible = false;
-    //     StopSpawning();
-    //     enemyFactory.ResetFactory();
-    //     player.ResetAtttributes();
-    //     spawningActive = true;
-    //     Time.timeScale = 1f;
-    //     StartCoroutine(SpawnWaves());
-    // }
 
     public void EndGame()
     {
@@ -78,21 +84,5 @@ public class GameManagerS : MonoBehaviour
         GameOverUI.SetActive(true);
     }
 
-    // public void ResetGame()
-    // {
-    //     Time.timeScale = 1f;
-    //     GameOverUI.SetActive(false);
-    //     //StartNewGame();
-    //     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    // }
 
-    // public void BackToMenu()
-    // {
-    //     EnemyFactory.Instance.StopAllBeltMovements();
-    //     EnemyFactory.Instance.ResetFactory();
-    //     Cursor.visible = true;
-    //     GameOverUI.SetActive(false);
-    //     Time.timeScale = 1f;
-    //     SceneManager.LoadScene(0);
-    // }
 }

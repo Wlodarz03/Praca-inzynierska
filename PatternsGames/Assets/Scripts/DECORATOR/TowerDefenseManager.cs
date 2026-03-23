@@ -1,9 +1,8 @@
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
-using Unity.VisualScripting;
 using TMPro;
+using Unity.Collections;
+using UnityEngine.UI;
 
 public class TowerDefenseManager : MonoBehaviour
 {
@@ -21,6 +20,14 @@ public class TowerDefenseManager : MonoBehaviour
     public int playerHealth;
     public TextMeshProUGUI playerHealthText;
     [SerializeField] private GameObject heart;
+    [SerializeField] private GameObject[] cursorsObjects; // 0: green, 1: blue, 2: red 
+    [SerializeField] private GameObject cursor;
+    private bool showingCursor = false;
+    private Vector2 mousePos;
+    [SerializeField] private Button play;
+    [SerializeField] private Button pause;
+
+    private NativeHashMap<int, int> costs = new NativeHashMap<int, int>(3, Allocator.Persistent);
 
     void Awake()
     {
@@ -31,8 +38,40 @@ public class TowerDefenseManager : MonoBehaviour
 
         enemySpawner = GetComponent<EnemySpawner>();
         heart.GetComponent<Animator>().ResetTrigger("Hit");
+        costs[0] = 100;
+        costs[1] = 500;
+        costs[2] = 1000;
     }
-    
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0f)
+        {
+            play.gameObject.ButtonDown();
+            play.onClick.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
+        {
+            pause.gameObject.ButtonDown();
+            pause.onClick.Invoke();
+        }
+
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        cursor.transform.position = mousePos;
+
+        float aspect = (float)Screen.width / Screen.height;
+
+        // 16:10 ≈ 1.6
+        if (Mathf.Abs(aspect - 1.6f) < 0.05f)
+        {
+            playerHealthText.rectTransform.anchoredPosition = new Vector3(-108.7f, 358.9f, 0);
+        }
+        else
+        {
+            playerHealthText.rectTransform.anchoredPosition = new Vector3(-208.7f, 338.9f, 0);
+        }
+    }
+
     private void GameOver()
     {
         Time.timeScale = 0f;
@@ -82,6 +121,49 @@ public class TowerDefenseManager : MonoBehaviour
         else
         {
             Debug.Log("Not enough currency!");
+        }
+    }
+
+    public void DisableHealth()
+    {
+        playerHealthText.gameObject.SetActive(false);
+    }
+
+    public void EnableHealth()
+    {
+        playerHealthText.gameObject.SetActive(true);
+    }
+
+    public void OnShopButtonClicked(int index)
+    {
+        if (currency >= costs[index])
+        {
+            cursor = cursorsObjects[index];
+            cursor.SetActive(true);
+            Cursor.visible = false;
+            showingCursor = true;
+        }
+    }
+
+    public void OnCellClicked()
+    {
+        cursor.SetActive(false);
+        Cursor.visible = true;
+        showingCursor = false;
+    }
+
+    public void OnButtonHoverEnter()
+    {
+        Cursor.visible = true;
+        cursor.SetActive(false);
+    }
+
+    public void OnButtonHoverExit()
+    {
+        if (showingCursor)
+        {
+            Cursor.visible = false;
+            cursor.SetActive(true);
         }
     }
 }

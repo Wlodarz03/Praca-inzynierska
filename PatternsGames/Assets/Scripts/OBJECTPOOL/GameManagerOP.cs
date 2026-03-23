@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManagerOP : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class GameManagerOP : MonoBehaviour
     public float currentScore = 0f;
     public bool isPlaying = false;
     public SaveData data;
-
+    [SerializeField] private Button play;
+    [SerializeField] private Button pause;
     public UnityEvent onPlay = new UnityEvent();
     public UnityEvent onGameOver = new UnityEvent();
 
@@ -34,6 +36,16 @@ public class GameManagerOP : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0f)
+        {
+            play.gameObject.ButtonDown();
+            play.onClick.Invoke();
+        }
+        else if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
+        {
+            pause.gameObject.ButtonDown();
+            pause.onClick.Invoke();
+        }
         if (isPlaying)
         {
             currentScore += Time.deltaTime;

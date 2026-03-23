@@ -30,6 +30,9 @@ public class CodePanelManager : MonoBehaviour
     private float infoDisplayTime = 1.5f;
     private float infoTimer = 0f;
 
+    private Color normalColor = new Color(0.1921569f, 0.2313726f, 0.2784314f, 0.8f);
+    private Color highlightColor = new Color(0.0509804f, 0.9686275f, 0.9803922f, 0.6f);
+
     private void Update()
     {
         if (infoObject.activeSelf)
@@ -67,9 +70,7 @@ public class CodePanelManager : MonoBehaviour
             if (i == 0)
             {
                 Image img = tab.GetComponent<Image>();
-                Color c = img.color;
-                c.a = 1f;
-                img.color = c;
+                img.color = highlightColor;
             }
         }
     }
@@ -79,22 +80,24 @@ public class CodePanelManager : MonoBehaviour
         codeText.text = HighlightSyntax(currentPattern.files[index].code);
 
         var tab = tabsContainer.GetChild(currentFileIndex).GetComponent<TabButton>();
-        tab.GetComponent<Image>().color = new Color(
-            tab.GetComponent<Image>().color.r,
-            tab.GetComponent<Image>().color.g,
-            tab.GetComponent<Image>().color.b,
-            tab.GetAlfa()
-        );
+        tab.GetComponent<Image>().color = normalColor;
+        // tab.GetComponent<Image>().color = new Color(
+        //     tab.GetComponent<Image>().color.r,
+        //     tab.GetComponent<Image>().color.g,
+        //     tab.GetComponent<Image>().color.b,
+        //     tab.GetAlfa()
+        // );
 
         currentFileIndex = index;
 
         tab = tabsContainer.GetChild(currentFileIndex).GetComponent<TabButton>();
-        tab.GetComponent<Image>().color = new Color(
-            tab.GetComponent<Image>().color.r,
-            tab.GetComponent<Image>().color.g,
-            tab.GetComponent<Image>().color.b,
-            1f
-        );
+        tab.GetComponent<Image>().color = highlightColor;
+        // tab.GetComponent<Image>().color = new Color(
+        //     tab.GetComponent<Image>().color.r,
+        //     tab.GetComponent<Image>().color.g,
+        //     tab.GetComponent<Image>().color.b,
+        //     1f
+        // );
         
         Canvas.ForceUpdateCanvases();
 
@@ -118,7 +121,7 @@ public class CodePanelManager : MonoBehaviour
         Time.timeScale = 1f;
         if (currentPattern.patternName == "Factory")
         {
-            UnityEngine.Cursor.visible = false;
+            Cursor.visible = false;
         }
     }
 

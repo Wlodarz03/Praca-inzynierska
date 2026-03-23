@@ -26,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TD_Decorator.unity
     guid: 639e262d51247604f8e56441481277e5
+  - enabled: 1
+    path: Assets/Scenes/Animals_SINGLETON.unity
+    guid: fa78fe2ce3135974d880cc9e6fbba978
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
