@@ -5,4 +5,4 @@ Celem jest zaprojektowanie oraz implementacja aplikacji w silniku Unity, która 
 
 W części teoretycznej pracy zostaną szczegółowo przeanalizowane wybrane wzorce projektowe, wraz z ich charakterystyką, typowymi zastosowaniami oraz wpływem na strukturę i organizację kodu. Każdy wzorzec zostanie przedstawiony z uwzględnieniem jego mocnych i słabych stron, potencjalnych kierunków rozbudowy, a także uzasadnienia jego użycia w określonych kontekstach projektowych.
 
-Aktualna wersja projektu: [PatternGames](https://testpatterngames.netlify.app/)
+Aktualna wersja projektu: [PatternGames](https://wlodarz03.itch.io/designpatterns)
