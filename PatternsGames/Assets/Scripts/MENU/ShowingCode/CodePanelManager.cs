@@ -4,12 +4,16 @@ using System.Text.RegularExpressions;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using System.Runtime.InteropServices;
+using System;
 
 public class CodePanelManager : MonoBehaviour
 {
 #if UNITY_WEBGL && !UNITY_EDITOR
     [DllImport("__Internal")]
     private static extern void DownloadCodeFile(string fileName, string content);
+
+    [DllImport("__Internal")]
+    private static extern void CopyToClipboardJS(string text);
 #endif
 
     public ScrollRect scrollRect;
@@ -75,9 +79,16 @@ public class CodePanelManager : MonoBehaviour
         }
     }
 
-    public void ShowFile(int index)
+    public void ShowFile(int index, bool shouldHighlight = true)
     {
-        codeText.text = HighlightSyntax(currentPattern.files[index].code);
+        if (shouldHighlight)
+        {
+            codeText.text = HighlightSyntax(currentPattern.files[index].code);
+        }
+        else
+        {
+            codeText.text = currentPattern.files[index].code;
+        }
 
         var tab = tabsContainer.GetChild(currentFileIndex).GetComponent<TabButton>();
         tab.GetComponent<Image>().color = normalColor;
@@ -127,7 +138,15 @@ public class CodePanelManager : MonoBehaviour
 
     public void CopyCodeToClipboard()
     {
-        GUIUtility.systemCopyBuffer = currentPattern.files[currentFileIndex].code;
+        string codeToCopy = currentPattern.files[currentFileIndex].code;
+
+        // Rozdzielamy logikę w zależności od platformy
+        #if UNITY_WEBGL && !UNITY_EDITOR
+                CopyToClipboardJS(codeToCopy);
+        #else
+                GUIUtility.systemCopyBuffer = codeToCopy;
+        #endif
+
         info.text = "Code copied to clipboard!";
         infoObject.SetActive(true);
     }

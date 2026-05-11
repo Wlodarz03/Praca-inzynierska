@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,13 @@ public class Cat : Animal
     [SerializeField] private GameObject humorHandle;
     [SerializeField] private TextMeshProUGUI humorText;
     [SerializeField] private Message messageManager;
+    [Header("Audio")]
+    [SerializeField] private AudioSource meowSound;
+    [SerializeField] private AudioSource eatSound;
+    [SerializeField] private AudioSource angrySound;
+    [SerializeField] private AudioSource sadSound;
+
+    private bool sadSoundPlayed = false;
     
     void Start()
     {
@@ -33,9 +41,8 @@ public class Cat : Animal
         {
             GameManagerA.Instance.LoseGame();
         }
-        if (humor < 40)
+        if (humor < 30)
         {
-            humorDecreaseValue = 3;
             GetComponent<Image>().sprite = catImages[3];
         }
 
@@ -57,6 +64,7 @@ public class Cat : Animal
             {
                 humorDecreaseValue = 4;
                 catImage.sprite = catImages[2];
+                angrySound.PlayOneShot(angrySound.clip);
                 timeWithoutFood = 20f;
             }
         }
@@ -95,6 +103,7 @@ public class Cat : Animal
             return;
         }
         AddHumor(15);
+        meowSound.PlayOneShot(meowSound.clip);
         isTapped = true;
         humorDecreaseValue = 0;
     }
@@ -110,6 +119,7 @@ public class Cat : Animal
         humorDecreaseValue = 1; 
         AddHumor(20);
         catImage.sprite = catImages[1];
+        eatSound.PlayOneShot(eatSound.clip);
     }
 
     private void ChangeHumor()
@@ -122,7 +132,14 @@ public class Cat : Animal
         }
         else if (humor >= 30)
         {
+            sadSoundPlayed = false;
             humorHandle.GetComponent<Image>().color = Color.yellow;
+        }
+        else if (humor < 30 && !sadSoundPlayed)
+        {
+            sadSound.PlayOneShot(sadSound.clip);
+            humorHandle.GetComponent<Image>().color = Color.red;
+            sadSoundPlayed = true;
         }
         else
         {

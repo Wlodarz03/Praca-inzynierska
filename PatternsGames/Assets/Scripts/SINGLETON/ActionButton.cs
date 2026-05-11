@@ -8,6 +8,9 @@ public class ActionButton : MonoBehaviour
 
     public void OnButtonPressed()
     {
-        HistoryManager.Instance.AddEntry(animalName, buttonName, energyCost);
+        if (EnergyManager.instance.GetEnergy() >= energyCost)
+        {
+            HistoryManager.Instance.AddEntry(animalName, buttonName, energyCost);
+        }  
     }
 }

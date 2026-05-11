@@ -16,6 +16,11 @@ public class GameManagerA : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private Button play;
     [SerializeField] private Button pause;
+    [SerializeField] private AudioClip backgroundMusic;
+    [SerializeField] private AudioSource winSound;
+    [SerializeField] private AudioSource loseSound;
+    private bool playedWinSound = false;
+    private bool playedLoseSound = false;
 
     private int gameTimeInMinutes = 5;
     private float timer;
@@ -31,12 +36,14 @@ public class GameManagerA : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        Time.timeScale = 1f;
     }
 
     void Start()
     {
         timer = gameTimeInMinutes * 60f;
         UpdateTimer();
+        AudioManager.Instance.PlayMusic(backgroundMusic);
     }
 
     void Update()
@@ -127,12 +134,25 @@ public class GameManagerA : MonoBehaviour
 
     public void LoseGame()
     {
+        if (!playedLoseSound)
+        {
+            loseSound.PlayOneShot(loseSound.clip);
+            playedLoseSound = true;
+        }
+        Time.timeScale = 0f;
         gameOverPanel.SetActive(true);
         gameOverText.text = "Game Over";
     }
 
     public void WinGame()
     {
+        if (!playedWinSound)
+        {
+            winSound.PlayOneShot(winSound.clip);
+            playedWinSound = true;
+        }
+        
+        Time.timeScale = 0f;
         gameOverPanel.SetActive(true);
         gameOverText.text = "You Win!";
     }

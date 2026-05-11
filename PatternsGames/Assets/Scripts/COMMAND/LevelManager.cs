@@ -4,6 +4,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+using Unity.VisualScripting;
 
 public class LevelManager : MonoBehaviour
 {
@@ -16,16 +17,29 @@ public class LevelManager : MonoBehaviour
     public PlayerMover player;
     public List<Sprite> boxSprites;
     public CommandHistoryVisualizer visualizer;
+    [SerializeField] private AudioClip backgroundMusic;
+    [SerializeField] private GameObject gameCompleteUI;
 
     private Dictionary<int, string[]> levels = new Dictionary<int, string[]>();
     private int currentLevel = 0;
 
     private List<GameObject> spawnedObjects = new List<GameObject>();
 
+    public List<GameObject> GetSpawnedObjects()
+    {
+        return spawnedObjects;
+    }
+
     void Awake()
     {
         Application.targetFrameRate = 60;
         QualitySettings.vSyncCount = 0;
+
+        if (AudioManager.Instance != null && backgroundMusic != null && !AudioManager.Instance.IsPlayingMusic(backgroundMusic))
+        {
+            AudioManager.Instance.PlayMusic(backgroundMusic);
+        }
+
         StartCoroutine(LoadLevelsCoroutine());
         //LoadLevels();
         visualizer.ResetVisualizer();
@@ -347,8 +361,21 @@ public class LevelManager : MonoBehaviour
         CommandInvoker.ClearHistory();
     }
 
+    public void ReplayGame()
+    {
+        currentLevel = 0;
+        ClearLevel();
+        BuildLevel(currentLevel);
+        gameCompleteUI.SetActive(false);
+    }
+
     public void NextLevel()
     {
+        if (currentLevel + 1 == levels.Count)
+        {
+            gameCompleteUI.SetActive(true);
+            return;
+        }
         ClearLevel();
         currentLevel++;
         BuildLevel(currentLevel);
@@ -374,6 +401,7 @@ public class LevelManager : MonoBehaviour
 
         if (complete)
         {
+            gameObject.GetComponent<AudioSource>().PlayOneShot(gameObject.GetComponent<AudioSource>().clip);
             visualizer.ResetVisualizer();
             NextLevel();
         }

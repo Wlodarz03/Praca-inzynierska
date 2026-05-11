@@ -22,6 +22,7 @@ public class GridManager : MonoBehaviour
     public event Action<int> OnMovesChanged;
     private int moves = 0;
     public bool gridCreated = false;
+    public bool gridFullyCompleted = false;
     
     void Awake()
     {
@@ -34,6 +35,7 @@ public class GridManager : MonoBehaviour
         CreateGrid();
         SubscribeNeighbors(useDiagonals);
         RandomizeSolvable(randomizeSteps);
+        gridFullyCompleted = true;
     }
 
     public void CreateGrid()
@@ -188,5 +190,14 @@ public class GridManager : MonoBehaviour
         {
             OnWin?.Invoke();
         }
+    }
+
+    public void SetAllTilesInteractable(bool interactable)
+    {
+        if (tiles == null) return;
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                if (tiles[x,y] != null)
+                    tiles[x, y].GetComponent<Collider2D>().enabled = interactable;
     }
 }

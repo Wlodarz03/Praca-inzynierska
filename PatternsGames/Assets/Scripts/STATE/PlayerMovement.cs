@@ -14,14 +14,30 @@ public class PlayerMovement : MonoBehaviour
     public float tileSize { get; private set; }
     public TextMeshProUGUI stateText;
     private IPlayerState currentState;
-
+    [SerializeField] private AudioClip backgroundMusic;
+    [SerializeField] private AudioSource levelCompleteSFX;
     [SerializeField] private GameObject narrationPanel;
+
+    private AudioManager audioManager;
+
+    void Awake()
+    {
+        audioManager = AudioManager.Instance;
+        if (audioManager != null && backgroundMusic != null && !audioManager.IsPlayingMusic(backgroundMusic))
+        {
+            audioManager.PlayMusic(backgroundMusic);
+        }
+    }
 
     void Start()
     {
         tileSize = mazeMaker.tileSize;
 
-        transform.position = new Vector2(1f * tileSize, 1f * tileSize); 
+        transform.position = new Vector2(1f * tileSize, 1f * tileSize);
+        if (GameManager.Instance.currentLevel > 1)
+        {
+            levelCompleteSFX.PlayOneShot(levelCompleteSFX.clip);
+        }
 
         ChangeState(new IdleState(this));
 
@@ -42,8 +58,9 @@ public class PlayerMovement : MonoBehaviour
             GameManager.Instance.NextLevel();
 
             //AudioManager.Instance.StopNarration();
-            
+
             UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+            
         }
     }
 

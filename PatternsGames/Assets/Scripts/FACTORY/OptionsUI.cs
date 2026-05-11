@@ -5,6 +5,7 @@ public class OptionsUI : MonoBehaviour
 {
     [SerializeField] private GameObject gameOverUI;
     [SerializeField] private GameObject crosshair;
+    [SerializeField] private GameObject codePanel;
 
     public void ResetButtonHandler()
     {
@@ -25,7 +26,10 @@ public class OptionsUI : MonoBehaviour
 
     public void OnButtonHoverExit()
     {
-        Cursor.visible = false;
-        crosshair.SetActive(true);
+        if (!codePanel.activeSelf)
+        {
+            Cursor.visible = false;
+            crosshair.SetActive(true);
+        }
     }
 }

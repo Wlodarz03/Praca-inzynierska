@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class InputManager : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class InputManager : MonoBehaviour
     public Button upBtn, downBtn, leftBtn, rightBtn;
     public Button undoBtn, redoBtn;
     public CommandHistoryVisualizer visualizer;
+    [SerializeField] private LevelManager levelManager;
+    [SerializeField] private AudioClip undoClip;
+    [SerializeField] private AudioClip redoClip;
+    private List<Vector2> targets => levelManager.GetSpawnedObjects().FindAll(obj => obj.layer == LayerMask.NameToLayer("Target")).ConvertAll(obj => (Vector2)obj.transform.position);
 
     [Header("Colors")]
     [SerializeField] private Color normalTextColor = Color.black;
@@ -23,8 +28,10 @@ public class InputManager : MonoBehaviour
         leftBtn.onClick.AddListener(() => { RunMove(Vector2Int.left); UpdateVisualizer(); });
         rightBtn.onClick.AddListener(() => { RunMove(Vector2Int.right); UpdateVisualizer(); });
 
-        undoBtn.onClick.AddListener(() => { CommandInvoker.UndoCommand(); UpdateVisualizer(); });
-        redoBtn.onClick.AddListener(() => { CommandInvoker.RedoCommand(); UpdateVisualizer(); });
+        undoBtn.onClick.AddListener(() => { CommandInvoker.UndoCommand(); UpdateVisualizer(undoClip); });
+        redoBtn.onClick.AddListener(() => { CommandInvoker.RedoCommand(); UpdateVisualizer(redoClip); });
+
+        UpdateVisualizer();
     }
 
     private void Update()
@@ -126,11 +133,12 @@ public class InputManager : MonoBehaviour
     {
         if (player != null)
         {
-            CommandInvoker.ExecuteCommand(new MoveCommand(player, dir));
+            CommandInvoker.ExecuteCommand(new MoveCommand(player, dir, targets));
+
         }
     }
 
-    private void UpdateVisualizer()
+    private void UpdateVisualizer(AudioClip clip = null)
     {
         // Pobieramy historię z invokera
         var history = CommandInvoker.GetHistory();
@@ -146,8 +154,10 @@ public class InputManager : MonoBehaviour
         int currentIndex = (int)currentField.GetValue(history);
         int maxSize = (int)maxSizeField.GetValue(history);
         bool canRedo = history.CanRedo;
+        bool canUndo = history.CanUndo;
 
         redoBtn.gameObject.SetActive(canRedo);
+        undoBtn.gameObject.SetActive(canUndo);
 
         int absStart = maxSize > 0 ? ((start % maxSize) + maxSize) % maxSize : -1; 
 
@@ -215,5 +225,13 @@ public class InputManager : MonoBehaviour
         {
             visualizer.UpdateStartArrow(-1, -1, maxSize);
         }
+
+        AudioSource audioSource = visualizer.GetComponent<AudioSource>();
+        if (clip != null && audioSource != null)
+        {
+            audioSource.clip = clip;
+            audioSource.PlayOneShot(audioSource.clip);
+        }
+
     }
 }

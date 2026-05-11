@@ -1,11 +1,12 @@
 using System.Collections;
-using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] enemyPrefabs;
+    [SerializeField] private TextMeshProUGUI waveText;
 
     [Header("Attributes")]
     [SerializeField] private int baseEnemies = 8;
@@ -29,6 +30,7 @@ public class EnemySpawner : MonoBehaviour
     private void Start()
     {
         StartCoroutine(StartWave());
+        waveText.text = $"Wave {currentWave}";
     }
 
     private void EnemyDestroyed()
@@ -40,6 +42,8 @@ public class EnemySpawner : MonoBehaviour
     {
         if (!isSpawning) return;
 
+        waveText.text = $"Wave {currentWave}";
+        
         timeSinceLastSpawn += Time.deltaTime;
         if (timeSinceLastSpawn >= (1f / enemiesPerSecond) && enemiesLeftToSpawn > 0)
         {

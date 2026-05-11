@@ -13,12 +13,18 @@ public static class CommandInvoker
 
     public static void UndoCommand()
     {
-        history.Undo();
+        if (history.CanUndo)
+        {
+            history.Undo();
+        }
     }
 
     public static void RedoCommand()
     {
-        history.Redo();
+        if (history.CanRedo)
+        {
+            history.Redo();
+        }
     }
     public static void ClearHistory()
     {

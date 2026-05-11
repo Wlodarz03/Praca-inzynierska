@@ -14,9 +14,13 @@ public class UI_Manager : MonoBehaviour
     private int seconds;
     private bool isChosen = false;
     private GridManager gm;
+    [SerializeField] private AudioClip menuMusic;
+    [SerializeField] private AudioClip gameMusic;
 
     void Start()
     {
+        AudioManager.Instance.PlayMusic(menuMusic);
+        Time.timeScale = 1f;
         gm = GridManager.Instance;
     }
 
@@ -28,11 +32,11 @@ public class UI_Manager : MonoBehaviour
 
         if (!GameManagerO.Instance.isFinished && isChosen)
         {
-            timer.text = $"Time: {minutes:00}:{seconds:00}";
+            timer.text = $"Time {minutes:00}:{seconds:00}";
         }
         else if (isChosen)
         {
-            finalTime.text = $"Your time: {minutes} minutes {seconds} seconds";
+            finalTime.text = $"Your Time {minutes} minutes {seconds} seconds";
             Time.timeScale = 0f;
             gameOverUI.SetActive(true);
         }
@@ -44,6 +48,7 @@ public class UI_Manager : MonoBehaviour
         if (gameOverUI.activeSelf)
             gameOverUI.SetActive(false);
 
+        isChosen = false;
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     
@@ -60,6 +65,8 @@ public class UI_Manager : MonoBehaviour
         gm.GridPrep();
         isChosen = true;
         t = 0f;
+        Time.timeScale = 1f;
+        AudioManager.Instance.PlayMusic(gameMusic);
     }
 
     public void HardButton()
@@ -74,5 +81,7 @@ public class UI_Manager : MonoBehaviour
         gm.GridPrep();
         isChosen = true;
         t = 0f;
+        Time.timeScale = 1f;
+        AudioManager.Instance.PlayMusic(gameMusic);
     }
 }

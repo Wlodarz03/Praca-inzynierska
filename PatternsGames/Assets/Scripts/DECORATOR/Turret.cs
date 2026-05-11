@@ -10,6 +10,11 @@ public class Turret : MonoBehaviour
     [SerializeField] private SpriteRenderer turretBase;
     [SerializeField] private SpriteRenderer turretTop;
     [SerializeField] private Sprite[] sprites;
+
+    [Header("SFX")]
+    [SerializeField] private AudioSource normalShootSound;
+    [SerializeField] private AudioSource fireRateShootSound;
+    [SerializeField] private AudioSource rangeShootSound;
     
 
     //[Header("Attributes")]
@@ -66,6 +71,20 @@ public class Turret : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
         BulletTD bulletScript = bullet.GetComponent<BulletTD>();
         bulletScript.SetTarget(target);
+
+        if (turretLogic.Visuals.HasFlag(TurretVisual.Range))
+        {
+            rangeShootSound.PlayOneShot(rangeShootSound.clip);
+        }
+        else if (turretLogic.Visuals.HasFlag(TurretVisual.FireRate))
+        {
+            fireRateShootSound.PlayOneShot(fireRateShootSound.clip);
+        }
+        else
+        {
+            normalShootSound.PlayOneShot(normalShootSound.clip);
+        }
+        
     }
 
     private void FindTarget()

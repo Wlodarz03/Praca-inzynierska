@@ -33,6 +33,7 @@ public class PlayerMover : MonoBehaviour
                 return false; //skrzynia zablokowana
             }
 
+
             boxOldPos = box.transform.position;
             movedBox = box.gameObject;
             box.transform.position = boxTarget;

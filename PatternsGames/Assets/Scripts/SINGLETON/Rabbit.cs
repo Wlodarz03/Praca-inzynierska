@@ -14,7 +14,8 @@ public class Rabbit : Animal
     private int carrotValue = 15;
     private float carrotDuration = 4f;
     private bool isEatingCarrot = false;
-
+    private bool isPanicking = false;
+    private bool sadSoundPlayed = false;
     [SerializeField] private GameObject buttons;
     [SerializeField] private Sprite[] rabbitImages;
     [SerializeField] private Image rabbitImage;
@@ -27,6 +28,12 @@ public class Rabbit : Animal
     [SerializeField] private Message messageManager;
     [SerializeField] private HoverManager hoverManager;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource rabbitSound;
+    [SerializeField] private AudioSource eatSound;
+    [SerializeField] private AudioSource panicSound;
+    [SerializeField] private AudioSource sadSound;
+
     void Start()
     {
         ChangeHumor();
@@ -34,12 +41,16 @@ public class Rabbit : Animal
 
     void Update()
     {
-        if (humor < 30 && !isHidden && !isEatingCarrot)
+        if (humor <= 0)
+        {
+            GameManagerA.Instance.LoseGame();
+        }
+        if (humor < 30 && !isHidden && !isEatingCarrot && !isPanicking)
         {
             //GetComponent<Image>().sprite = rabbitImages[4];
             rabbitImage.sprite = rabbitImages[4];
         }
-        else if (!isHidden && !isEatingCarrot)
+        else if (!isHidden && !isEatingCarrot && !isPanicking)
         {
             //GetComponent<Image>().sprite = rabbitImages[0];
             rabbitImage.sprite = rabbitImages[0];
@@ -85,14 +96,16 @@ public class Rabbit : Animal
             if (timeSinceLastPanic >= panicInterval)
             {
                 //GetComponent<Image>().sprite = rabbitImages[3];
+                isPanicking = true;
+                panicSound.PlayOneShot(panicSound.clip);
                 rabbitImage.sprite = rabbitImages[3];
                 RemoveHumor(8);
                 timeSinceLastPanic = 0f;
             }
-            if (timeSinceLastPanic == 2f)
+            if (timeSinceLastPanic >= 3f)
             {
                 //GetComponent<Image>().sprite = rabbitImages[0];
-                rabbitImage.sprite = rabbitImages[0];
+                isPanicking = false;
             }
         }
 
@@ -126,6 +139,7 @@ public class Rabbit : Animal
         dog.AddHumor(5);
         cat.AddHumor(5);
         hamster.AddHumor(5);
+        eatSound.PlayOneShot(eatSound.clip);
     }
 
     public void Hide()
@@ -141,6 +155,7 @@ public class Rabbit : Animal
         //GetComponent<Image>().sprite = rabbitImages[1];
         rabbitImage.sprite = rabbitImages[1];
         DisableActions();
+        rabbitSound.PlayOneShot(rabbitSound.clip);
     }
 
     private void ChangeHumor()
@@ -153,7 +168,14 @@ public class Rabbit : Animal
         }
         else if (humor >= 30)
         {
+            sadSoundPlayed = false;
             humorHandle.GetComponent<Image>().color = Color.yellow;
+        }
+        else if (humor < 30 && !sadSoundPlayed)
+        {
+            sadSound.PlayOneShot(sadSound.clip);
+            humorHandle.GetComponent<Image>().color = Color.red;
+            sadSoundPlayed = true;
         }
         else
         {

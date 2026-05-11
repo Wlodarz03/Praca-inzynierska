@@ -25,13 +25,24 @@ public class Dog : Animal
     [SerializeField] private TextMeshProUGUI humorText;
     [SerializeField] private Message messageManager;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource barkSound;
+    [SerializeField] private AudioSource playSound;
+    [SerializeField] private AudioSource sadSound;
+    
+    private bool sadSoundPlayed = false;
+
     void Start()
     {
         ChangeHumor();
     }
     void Update()
     {
-        if ((rabbit.Humor < 30 || cat.Humor < 30 || hamster.Humor < 30) && !isWalking && !isPlayingWithBall)
+        if (humor <= 0)
+        {
+            GameManagerA.Instance.LoseGame();
+        }
+        if ((rabbit.Humor < 30 || cat.Humor < 30 || hamster.Humor < 30 || humor < 30) && !isWalking && !isPlayingWithBall)
         {
             humorDecreaseValue = 2;
             dogImage.sprite = sprites[3];
@@ -52,7 +63,10 @@ public class Dog : Animal
                 dogImage.sprite = sprites[0];
                 EnableActions();
                 cat.EnableActions();
-                hamster.EnableActions();
+                if (!hamster.IsResting())
+                {
+                    hamster.EnableActions();
+                }
                 rabbit.EnableActions();
             }
         }
@@ -95,6 +109,7 @@ public class Dog : Animal
         cat.AddHumor(5);
         hamster.AddHumor(5);
         rabbit.RemoveHumor(3);
+        playSound.PlayOneShot(playSound.clip);
     }
     public void Walk()
     {
@@ -109,11 +124,11 @@ public class Dog : Animal
         cat.AddHumor(10);
         hamster.AddHumor(10);
         rabbit.AddHumor(10);
-        // tutaj wylaczyc opcje klikania u wszystkich przez 5 sekund
         DisableActions();
         hamster.DisableActions();
         cat.DisableActions();
         rabbit.DisableActions();
+        barkSound.PlayOneShot(barkSound.clip);
     }
 
     private void ChangeHumor()
@@ -126,7 +141,14 @@ public class Dog : Animal
         }
         else if (humor >= 30)
         {
+            sadSoundPlayed = false;
             humorHandle.GetComponent<Image>().color = Color.yellow;
+        }
+        else if (humor < 30 && !sadSoundPlayed)
+        {
+            sadSound.PlayOneShot(sadSound.clip);
+            humorHandle.GetComponent<Image>().color = Color.red;
+            sadSoundPlayed = true;
         }
         else
         {

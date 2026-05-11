@@ -6,6 +6,7 @@ public class Plot : MonoBehaviour
     private GameObject tower;
     [SerializeField] private Color hoverColor;
     private Color startColor;
+    [SerializeField] private AudioSource buildSound;
 
     private void Start()
     {
@@ -85,6 +86,7 @@ public class Plot : MonoBehaviour
             TowerDefenseManager.Instance.OnCellClicked();
             TowerDefenseManager.Instance.SpendCurrency(cost);
             towerToBuild.transform.position = transform.position;
+            buildSound.PlayOneShot(buildSound.clip);
             tower = towerToBuild;
             BuildManager.Instance.ResetCurrentTurret();
         }

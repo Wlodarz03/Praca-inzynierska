@@ -24,6 +24,7 @@ public class Health : MonoBehaviour
         {
             EnemySpawner.onEnemyDestroyed.Invoke();
             TowerDefenseManager.Instance.AddCurrency(currencyReward);
+            TowerDefenseManager.Instance.PlayEnemyDeathSound();
             isDestroyed = true;
             Destroy(gameObject);
         }

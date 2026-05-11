@@ -12,6 +12,7 @@ public class EnemyMovement : MonoBehaviour
     public float tileSize { get; private set; }
     public float moveCooldown = 1f;
 
+    [SerializeField] private AudioSource alarmSFX;
     [HideInInspector] public int[,] maze;
     [HideInInspector] public float moveTimer = 0f;
     [HideInInspector] public Vector2 prevPos;
@@ -62,5 +63,10 @@ public class EnemyMovement : MonoBehaviour
 
         return distance < tileSize * 0.5;
         
+    }
+
+    public void AlarmSFX()
+    {
+        alarmSFX.PlayOneShot(alarmSFX.clip);
     }
 }

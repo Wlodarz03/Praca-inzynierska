@@ -1,20 +1,24 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MoveCommand : ICommand
 {
     private PlayerMover player;
     private Vector2Int direction;
-
+    private List<Vector2> targets;
     private Vector2 oldPlayerPos;
     private GameObject movedBox;
     private Vector2 oldBoxPos;
     private Sprite prevSprite;
     private Sprite newSprite;
 
-    public MoveCommand(PlayerMover player, Vector2Int dir)
+
+    public MoveCommand(PlayerMover player, Vector2Int dir, List<Vector2> targets)
     {
         this.player = player;
         this.direction = dir;
+        this.targets = targets;
         prevSprite = player.spriteRenderer.sprite;
 
         if (dir == Vector2Int.up)
@@ -29,6 +33,7 @@ public class MoveCommand : ICommand
             newSprite = prevSprite;
     }
 
+
     public bool Execute()
     {
         oldPlayerPos = (Vector2)player.transform.position;
@@ -40,6 +45,11 @@ public class MoveCommand : ICommand
         }
         else
         {
+            if (movedBox != null &&targets.Contains((Vector2)movedBox.transform.position))
+            {
+                AudioSource a = movedBox.GetComponent<AudioSource>();
+                a.PlayOneShot(a.clip);
+            }
             player.spriteRenderer.sprite = newSprite;
         }
 

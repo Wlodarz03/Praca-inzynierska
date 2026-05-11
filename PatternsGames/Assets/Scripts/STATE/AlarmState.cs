@@ -16,6 +16,7 @@ public class AlarmState : IEnemyState
     {
         timer = 0f;
         Debug.Log("Enemy entered ALARM state");
+        enemy.AlarmSFX();
         enemy.alertIcon.transform.position = enemy.transform.position + new Vector3(0f, enemy.tileSize * 0.8f, 0f);
         alertIcon.SetActive(true);
     }
@@ -26,8 +27,11 @@ public class AlarmState : IEnemyState
         
         if (enemy.PlayerHit())
         {
-            Debug.Log("Game over");
-            GameManager.Instance.GameOver();
+            if (GameManager.Instance != null)
+            {
+                Debug.Log("Game over");
+                GameManager.Instance.GameOver();
+            }
         }
 
         if (timer >= alarmTime)

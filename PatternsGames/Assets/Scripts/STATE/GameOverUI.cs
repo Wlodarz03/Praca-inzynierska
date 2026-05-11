@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class GameOverUI : MonoBehaviour
 {
     [SerializeField] private GameObject gameOverUI;
+    
     public TextMeshProUGUI scoreText;
     GameManager gm;
 
@@ -17,7 +18,7 @@ public class GameOverUI : MonoBehaviour
     public void ActivateGameOverUI()
     {
         gameOverUI.SetActive(true);
-        scoreText.text = "Your score: " + gm.score + "\n\n Reached level: " + gm.currentLevel;
+        scoreText.text = "Score " + gm.score + "\n Reached Level " + gm.currentLevel;
     }
 
     public void Reset()
@@ -26,6 +27,7 @@ public class GameOverUI : MonoBehaviour
         AudioManager.Instance.StopNarration();
         gm.StartNewGame();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        
     }
 
     public void PlayButtonHandler()
@@ -35,6 +37,7 @@ public class GameOverUI : MonoBehaviour
         gameOverUI.SetActive(false);
 
         gm.StartNewGame();
+        gm.DestroyGameManager();
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

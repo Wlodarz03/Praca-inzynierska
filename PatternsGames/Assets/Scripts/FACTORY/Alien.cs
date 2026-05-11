@@ -1,8 +1,7 @@
 using UnityEngine;
 
 public class Alien : BaseEnemy
-{
-    public override void Initialize()
+{    public override void Initialize()
     {
         enemyFactory = EnemyFactory.Instance;
         EnemyType = EnemyFactory.EnemyType.Alien;
@@ -16,6 +15,5 @@ public class Alien : BaseEnemy
     {
         Initialize();
     }
-
 
 }

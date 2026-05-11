@@ -8,8 +8,8 @@ public class GameManagerS : MonoBehaviour
     [SerializeField] private GameObject GameOverUI;
     [SerializeField] private GameObject crosshair;
     [SerializeField] private TextMeshProUGUI Score;
-    [SerializeField] private Button play;
-    [SerializeField] private Button pause;
+    [SerializeField] private Button playPause;
+    [SerializeField] private AudioClip backgroundMusic;
     private EnemyFactory enemyFactory;
 
     [Header("Enemy Spawning Settings")]
@@ -22,20 +22,19 @@ public class GameManagerS : MonoBehaviour
 
     void Awake()
     {
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMusic(backgroundMusic);
+        }
         enemyFactory = EnemyFactory.Instance;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0f)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            play.gameObject.ButtonDown();
-            play.onClick.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
-        {
-            pause.gameObject.ButtonDown();
-            pause.onClick.Invoke();
+            playPause.gameObject.ButtonDown();
+            playPause.onClick.Invoke();
         }
     }
 
@@ -76,10 +75,13 @@ public class GameManagerS : MonoBehaviour
 
     public void EndGame()
     {
+        FactorySFX.instance.PlayGameOverSFX();
         StopSpawning();
         Time.timeScale = 0f;
-        Score.text = "Kills: " + player.GetKills();
+        Score.text = "Kills " + player.GetKills();
         Cursor.visible = true;
+        AudioManager.Instance.StopNarration();
+        AudioManager.Instance.StopMusic();
         crosshair.SetActive(false);
         GameOverUI.SetActive(true);
     }

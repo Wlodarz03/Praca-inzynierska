@@ -16,6 +16,14 @@ public class NarrationUIController : MonoBehaviour
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private Button volumeIcon;
 
+    [Header("Fast Forward Settings")]
+    [SerializeField] private float fastForwardSpeed = 2f;
+    [SerializeField] private float holdDurationThreshold = 0.3f;
+
+    private float pointerDownTime = 0f;
+    private bool isFastForwardPointerDown = false;
+    private bool isFastForwarding = false;
+
     private AudioManager audioManager;
     private SubtitlePlayer subtitlePlayer;
     private Image buttonImg;
@@ -94,6 +102,48 @@ public class NarrationUIController : MonoBehaviour
         progressSlider.SetValueWithoutNotify(time / length);
         currentTimeText.text = FormatTime(time);
         totalTimeText.text = FormatTime(length);
+
+        if (isFastForwardPointerDown)
+        {
+            pointerDownTime += Time.unscaledDeltaTime;
+
+            if (pointerDownTime >= holdDurationThreshold && !isFastForwarding)
+            {
+                StartFastForward();
+            }
+        }
+    }
+
+    public void OnForwardPointerDown()
+    {
+        isFastForwardPointerDown = true;
+        pointerDownTime = 0f;
+        isFastForwarding = false;
+    }
+
+    public void OnForwardPointerUp()
+    {
+        isFastForwardPointerDown = false;
+        if (isFastForwarding)
+        {
+            StopFastForward();
+        }
+        else
+        {
+            Forward5Seconds();
+        }
+    }
+
+    private void StartFastForward()
+    {
+        isFastForwarding = true;
+        audioManager.SetNarrationSpeed(fastForwardSpeed);
+    }
+
+    private void StopFastForward()
+    {
+        isFastForwarding = false;
+        audioManager.SetNarrationSpeed(1f);
     }
 
     private void OnNarrationStarted(NarrationData data)
@@ -164,5 +214,10 @@ public class NarrationUIController : MonoBehaviour
         int min = Mathf.FloorToInt(seconds / 60f);
         int sec = Mathf.FloorToInt(seconds % 60f);
         return $"{min:00}:{sec:00}";
+    }
+
+    public void HidePanel()
+    {
+        root.SetActive(false);
     }
 }

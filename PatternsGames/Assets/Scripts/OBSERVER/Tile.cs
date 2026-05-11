@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using NUnit.Framework;
+using UnityEditor;
 
 public class Tile : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class Tile : MonoBehaviour
     public float flashDuration = 2f;
     public float flashScale = 1.2f;
     private Vector3 deafultScale;
+
+    [SerializeField] private AudioSource switchOnSound;
+    [SerializeField] private AudioSource switchOffSound;
+    [SerializeField] private AudioSource notificationSound;
 
     void Awake()
     {
@@ -51,10 +56,28 @@ public class Tile : MonoBehaviour
             GameManagerO.Instance?.CheckForWin();
         }
     }
-
+    
     public void RefreshVisual()
     {
-        sr.color = isOn ? Color.yellow : Color.gray;
+        if (isOn)
+        {
+            sr.color = Color.yellow;
+            if (GridManager.Instance != null && GridManager.Instance.gridFullyCompleted)
+            {
+                switchOnSound.PlayOneShot(switchOnSound.clip);
+            }
+            
+        }
+        else
+        {
+            sr.color = Color.gray;
+            if (GridManager.Instance != null && GridManager.Instance.gridFullyCompleted)
+            {
+                switchOffSound.PlayOneShot(switchOffSound.clip);
+            }
+            
+        }
+        //sr.color = isOn ? Color.yellow : Color.gray;
     }
 
     public void SubscribeTo(Tile other)
@@ -130,6 +153,11 @@ public class Tile : MonoBehaviour
         if (earPrefab != null)
         {
             ear = Instantiate(earPrefab, transform.position, Quaternion.identity, transform);
+        }
+
+        if (GridManager.Instance != null && GridManager.Instance.gridFullyCompleted)
+        {
+            notificationSound.PlayOneShot(notificationSound.clip);
         }
 
         //sr.color = highlightColor;

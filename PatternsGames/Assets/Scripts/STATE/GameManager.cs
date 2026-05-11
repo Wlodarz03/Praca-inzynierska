@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     public bool isNarrationPlaying = false;
     public UnityEvent onGameOver = new UnityEvent();
     private Button play;
-    private Button pause;
 
     private void Awake()
     {
@@ -32,34 +31,58 @@ public class GameManager : MonoBehaviour
 
     public void DestroyGameManager()
     {
-        Destroy(gameObject);
+        if (Instance == this)
+        {
+            Instance = null;
+            DontDestroyOnLoad(gameObject);
+            Destroy(gameObject);
+        }
+        
     }
 
     void Start()
     {
-        play = GameObject.Find("Play").GetComponent<Button>();
-        pause = GameObject.Find("Pause").GetComponent<Button>();
-
-        StartNewGame();
+        //AudioManager.Instance.SetSFXSource(GameObject.FindWithTag("Player").GetComponent<AudioSource>());
+        try
+        {
+            play = GameObject.Find("Play").GetComponent<Button>();
+        }
+        catch
+        {
+            // Debug.Log("Play button not found");  
+        }
+        finally
+        {
+            StartNewGame();
+        }
     }
 
     private void Update()
     {
-        if (play == null || pause == null)
+        if (play == null)
         {
-            play = GameObject.Find("Play").GetComponent<Button>();
-            pause = GameObject.Find("Pause").GetComponent<Button>();
+            try
+            {
+                play = GameObject.Find("Play").GetComponent<Button>();
+            }
+            catch
+            {
+                // Debug.Log("Play button not found");
+            }
+            
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0f)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            play.gameObject.ButtonDown();
-            play.onClick.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
-        {
-            pause.gameObject.ButtonDown();
-            pause.onClick.Invoke();
+            try
+            {
+                play.gameObject.ButtonDown();
+                play.onClick.Invoke();
+            }
+            catch
+            {
+                // Debug.Log("Play button not found");
+            }
         }
     }
 
@@ -72,8 +95,9 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         isPlaying = false;
-        ToggleNarration();
+        isNarrationPlaying = false;
         AudioManager.Instance.StopNarration();
+        AudioManager.Instance.StopMusic();
         onGameOver.Invoke();
         Time.timeScale = 0f;
     }

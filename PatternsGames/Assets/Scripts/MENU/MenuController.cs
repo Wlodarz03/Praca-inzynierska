@@ -9,6 +9,7 @@ public class MenuController : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1f;
         Cursor.visible = true;
         var effect = Instantiate(starsEffect, Vector3.zero, Quaternion.identity);
         effect.transform.position = new Vector3(746f, 354f, 0f);
@@ -47,6 +48,10 @@ public class MenuController : MonoBehaviour
 
     public void StartSingletonGame(){
         SceneManager.LoadScene(7);
+    }
+
+    public void StartMVPGame(){
+        SceneManager.LoadScene(8);
     }
 
     public void ExitGame()

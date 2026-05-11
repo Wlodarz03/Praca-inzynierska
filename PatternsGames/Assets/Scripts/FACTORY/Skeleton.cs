@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Skeleton : BaseEnemy
 {
+
     public override void Initialize()
     {
         enemyFactory = EnemyFactory.Instance;
@@ -16,4 +17,6 @@ public class Skeleton : BaseEnemy
     {
         Initialize();
     }
+
+
 }

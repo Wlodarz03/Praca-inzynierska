@@ -1,0 +1,111 @@
+1
+00:00:00,000 --> 00:00:06,240
+Demo overview. In this demo, the user interacts with a simple equipment system that demonstrates
+
+2
+00:00:06,240 --> 00:00:13,920
+the model view presenter (MVP design pattern). The screen is divided into three main components,
+
+3
+00:00:13,920 --> 00:00:21,600
+view, presenter, and model. The user can equip items or reset stats, and each action is processed
+
+4
+00:00:21,600 --> 00:00:29,000
+step-by-step, according to the MVP architecture. The system visually highlights how data flows between components.
+
+5
+00:00:29,000 --> 00:00:35,760
+User interaction flow: when the user clicks a button, for example: Equip Sword,
+
+6
+00:00:36,320 --> 00:00:42,560
+the process begins in the view. The view is responsible only for detecting user input and UI.
+
+7
+00:00:43,520 --> 00:00:49,440
+It does not contain any business logic. Instead, it forwards the action to the presenter.
+
+8
+00:00:49,440 --> 00:00:54,000
+Presenter logic: The presenter acts as the central coordinator of the system.
+
+9
+00:00:54,720 --> 00:00:58,640
+After receiving the event from the view, it interprets the user's intention.
+
+10
+00:00:59,360 --> 00:01:05,200
+For example, when the user equips a sword, the presenter decides that the model needs to be updated.
+
+11
+00:01:06,000 --> 00:01:09,600
+It sends a request to the model to change the appropriate data,
+
+12
+00:01:09,600 --> 00:01:12,880
+such as increasing attack, and setting hasSword to true.
+
+13
+00:01:14,080 --> 00:01:19,600
+Model update: The model contains only the application data and logic related to that data.
+
+14
+00:01:20,480 --> 00:01:23,840
+It updates its internal state based on the presenter's request.
+
+15
+00:01:24,400 --> 00:01:30,400
+For example, attack value increases and hasSword becomes true. The model does not communicate
+
+16
+00:01:30,400 --> 00:01:36,400
+directly with the view. Updating the view: after updating the model, the presenter retrieves the
+
+17
+00:01:36,400 --> 00:01:43,200
+new data. It then sends this updated data back to the view. The view refreshes the UI to reflect
+
+18
+00:01:43,200 --> 00:01:48,880
+the new state, such as displaying the updated attack value.
+
+19
+00:01:48,880 --> 00:01:53,360
+Step by step visualization: Each press of the next step button reveals the next stage of this process.
+
+20
+00:01:54,160 --> 00:02:00,000
+1. View detects input and notifies presenter. 2. Presenter updates model.
+
+21
+00:02:00,640 --> 00:02:03,600
+3. Model changes state and informs presenter.
+
+22
+00:02:04,400 --> 00:02:07,440
+4. Presenter retrieves data and updates view.
+
+23
+00:02:08,240 --> 00:02:10,640
+5. View refreshes UI.
+
+24
+00:02:11,440 --> 00:02:16,480
+Summary, the MVP pattern separates the application into three distinct roles.
+
+25
+00:02:17,360 --> 00:02:19,920
+View handles user input and UI rendering.
+
+26
+00:02:20,640 --> 00:02:23,840
+Presenter processes logic and coordinates communication.
+
+27
+00:02:24,880 --> 00:02:26,800
+Model stores and manages data.
+
+28
+00:02:27,520 --> 00:02:32,240
+This separation makes the system easier to maintain, test, and extend.

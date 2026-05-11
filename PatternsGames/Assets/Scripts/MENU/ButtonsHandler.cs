@@ -1,5 +1,6 @@
 using TMPro.Examples;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class ButtonsHandler : MonoBehaviour
@@ -10,21 +11,37 @@ public class ButtonsHandler : MonoBehaviour
     [SerializeField] private NarrationData narration;
     [SerializeField] private GameObject mainCamera;
 
+    [SerializeField] private Image image;
+    [SerializeField] private Sprite[] sprites;
+
     // ResetButton specjalny dla każdej gry
+
+    void Start()
+    {
+        image.sprite = sprites[0];
+    }
     
     public void MenuButtonHandler()
     {
         Cursor.visible = true;
         AudioManager.Instance.StopNarration();
+        AudioManager.Instance.StopMusic();
         SceneManager.LoadScene(0);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.DestroyGameManager();
+        }
     }
 
     public void CodeButtonHandler()
     {
         AudioManager.Instance.StopNarration();
-        Cursor.visible = true;
         Time.timeScale = 0f;
         panelManager.ShowCode(context.patternCode);
+        if (Cursor.visible == false)
+        {
+            Cursor.visible = true;
+        }
     }
 
     public void NarrationButtonHandler()
@@ -54,6 +71,20 @@ public class ButtonsHandler : MonoBehaviour
             x.orthographicSize = 7;
             mainCamera.transform.position = new Vector3(0, -1.5f, -10);
             AudioManager.Instance.PlayNarration(narration);
+        }
+    }
+
+    public void PlayPauseButton()
+    {
+        if (Time.timeScale == 1f)
+        {
+            Time.timeScale = 0f;
+            image.sprite = sprites[1];
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            image.sprite = sprites[0];
         }
     }
 

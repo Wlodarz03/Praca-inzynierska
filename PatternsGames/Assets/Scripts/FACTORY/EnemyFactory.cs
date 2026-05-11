@@ -18,7 +18,8 @@ public class EnemyFactory : MonoBehaviour
     [Header("Pooling")]
     public int PoolperEnemyType = 10;
     public Transform poolParent;
-    public Transform spawnParent; 
+    public Transform spawnSkeletonParent;
+    public Transform spawnZombiesAliensParent;
     public float speedBelt;
 
     Dictionary<EnemyType, Queue<GameObject>> enemyPools = new Dictionary<EnemyType, Queue<GameObject>>();
@@ -67,14 +68,33 @@ public class EnemyFactory : MonoBehaviour
         if (q.Count > 0)
         {
             GameObject obj = q.Dequeue();
-            obj.transform.SetParent(spawnParent, true);
+            if (type == EnemyType.Skeleton)
+            {
+                obj.transform.SetParent(spawnSkeletonParent, true);
+                obj.transform.localScale = new Vector3(0.45f, 0.45f, 1f);
+            }
+            else
+            {
+                obj.transform.SetParent(spawnZombiesAliensParent, true);
+                obj.transform.localScale = new Vector3(0.75f, 0.75f, 1f);
+            }
             obj.SetActive(true);
             return obj;
         }
         else
         {
             GameObject prefab = PrefabFor(type);
-            GameObject obj = Instantiate(prefab, spawnParent, true);
+            GameObject obj;
+            if (type == EnemyType.Skeleton)
+            {
+                obj = Instantiate(prefab, spawnSkeletonParent, true);
+                obj.transform.localScale = new Vector3(0.45f, 0.45f, 1f);
+            }
+            else
+            {
+                obj = Instantiate(prefab, spawnZombiesAliensParent, true);
+                obj.transform.localScale = new Vector3(0.75f, 0.75f, 1f);
+            }
             obj.SetActive(true);
             return obj;
         }
@@ -215,7 +235,11 @@ public class EnemyFactory : MonoBehaviour
             }
         }
         
-        foreach (Transform child in spawnParent)
+        foreach (Transform child in spawnSkeletonParent)
+        {
+            Destroy(child.gameObject);
+        }
+        foreach (Transform child in spawnZombiesAliensParent)
         {
             Destroy(child.gameObject);
         }

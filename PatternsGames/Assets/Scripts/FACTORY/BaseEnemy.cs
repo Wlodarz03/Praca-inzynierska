@@ -54,6 +54,19 @@ public abstract class BaseEnemy : MonoBehaviour, IEnemy
 
     public void Die()
     {
+        if (EnemyType == EnemyFactory.EnemyType.Zombie)
+        {
+            FactorySFX.instance.PlayZombieDeathSFX();
+        }
+        else if (EnemyType == EnemyFactory.EnemyType.Skeleton)
+        {
+            FactorySFX.instance.PlaySkeletonDeathSFX();
+        }
+        else if (EnemyType == EnemyFactory.EnemyType.Alien)
+        {
+            FactorySFX.instance.PlayAlienDeathSFX();
+        }
+
         GameEvents.OnEnemyKilled?.Invoke();
         enemyFactory.ReturnToPool(EnemyType, gameObject);
     }

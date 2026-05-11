@@ -27,8 +27,12 @@ public class PatrolState : IEnemyState
 
         if (enemy.PlayerHit())
         {
-            Debug.Log("Game over");
-            GameManager.Instance.GameOver();
+            if (GameManager.Instance != null)
+            {
+                Debug.Log("Game over");
+                GameManager.Instance.GameOver();
+            }
+            
         }
 
         if (CanSeePlayer(2))

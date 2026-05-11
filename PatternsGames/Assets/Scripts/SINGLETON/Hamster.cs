@@ -28,12 +28,24 @@ public class Hamster : Animal
     [SerializeField] private Rabbit rabbit;
     [SerializeField] HoverManager hoverManager;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource hamsterSound;
+    [SerializeField] private AudioSource hugSound;
+    [SerializeField] private AudioSource sadSound;
+    [SerializeField] private AudioSource wheelSound;
+
+    private bool sadSoundPlayed = false;
+
     void Start()
     {
         ChangeHumor();
     }
     void Update()
     {
+        if (humor <= 0)
+        {
+            GameManagerA.Instance.LoseGame();
+        }
         if (humor < 30 && !isResting && !isOnWheel && !wasHugged)
         {
             //GetComponent<Image>().sprite = hamsterImages[4];
@@ -47,6 +59,7 @@ public class Hamster : Animal
             if (restInterval <= 0f && !isOnWheel && !wasHugged)
             {
                 isResting = true;
+                hamsterSound.PlayOneShot(hamsterSound.clip);
                 //GetComponent<Image>().sprite = hamsterImages[3];
                 hamsterImage.sprite = hamsterImages[3];
                 restInterval = 20f;
@@ -73,6 +86,7 @@ public class Hamster : Animal
 
             if (wheelTime <= 0f)
             {
+                EnableActions();
                 isOnWheel = false;
                 humorDecreaseValue = 1;
                 //GetComponent<Image>().sprite = hamsterImages[0];
@@ -129,7 +143,8 @@ public class Hamster : Animal
         humorDecreaseValue = 0;
         //GetComponent<Image>().sprite = hamsterImages[1];
         hamsterImage.sprite = hamsterImages[1];
-        
+        wheelSound.PlayOneShot(wheelSound.clip);
+        DisableActions();
     }
 
     public void Hug()
@@ -147,6 +162,7 @@ public class Hamster : Animal
         //GetComponent<Image>().sprite = hamsterImages[2];
         hamsterImage.sprite = hamsterImages[2];
         DisableActions();
+        hugSound.PlayOneShot(hugSound.clip);
     }
 
     private void ChangeHumor()
@@ -159,7 +175,14 @@ public class Hamster : Animal
         }
         else if (humor >= 30)
         {
+            sadSoundPlayed = false;
             humorHandle.GetComponent<Image>().color = Color.yellow;
+        }
+        else if (humor < 30 && !sadSoundPlayed)
+        {
+            sadSound.PlayOneShot(sadSound.clip);
+            humorHandle.GetComponent<Image>().color = Color.red;
+            sadSoundPlayed = true;
         }
         else
         {
@@ -181,6 +204,11 @@ public class Hamster : Animal
         }
         buttons.SetActive(false);
         
+    }
+
+    public bool IsResting()
+    {
+        return isResting;
     }
 
     public void EnableActions()

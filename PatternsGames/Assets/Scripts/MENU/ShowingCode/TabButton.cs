@@ -25,6 +25,13 @@ public class TabButton : MonoBehaviour
     public void OnClick()
     {
         Debug.Log("Tab clicked: " + index);
-        manager.ShowFile(index);
+        if (label.text == "View")
+        {
+            manager.ShowFile(index, false);
+        }
+        else
+        {
+            manager.ShowFile(index);
+        }
     }
 }

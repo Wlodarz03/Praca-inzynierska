@@ -16,7 +16,10 @@ public class GameManagerOP : MonoBehaviour
     public bool isPlaying = false;
     public SaveData data;
     [SerializeField] private Button play;
-    [SerializeField] private Button pause;
+    [SerializeField] private AudioClip backgroundMusic;
+    [SerializeField] private AudioSource newRecordSFX;
+    [SerializeField] private AudioSource gameOverSFX;
+
     public UnityEvent onPlay = new UnityEvent();
     public UnityEvent onGameOver = new UnityEvent();
 
@@ -36,16 +39,12 @@ public class GameManagerOP : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0f)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             play.gameObject.ButtonDown();
             play.onClick.Invoke();
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
-        {
-            pause.gameObject.ButtonDown();
-            pause.onClick.Invoke();
-        }
+
         if (isPlaying)
         {
             currentScore += Time.deltaTime;
@@ -62,6 +61,10 @@ public class GameManagerOP : MonoBehaviour
         onPlay.Invoke();
         isPlaying = true;
         currentScore = 0;
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMusic(backgroundMusic);
+        }
     }
 
     public void GameOver()
@@ -73,8 +76,17 @@ public class GameManagerOP : MonoBehaviour
             string saveString = JsonUtility.ToJson(data);
 
             SaveSystem.Save("save", saveString);
+            newRecordSFX.PlayOneShot(newRecordSFX.clip);
         }
+        else
+        {
+            gameOverSFX.PlayOneShot(gameOverSFX.clip);
+        }
+
         isPlaying = false;
+
         onGameOver.Invoke();
+        AudioManager.Instance.StopNarration();
+        AudioManager.Instance.StopMusic();
     }
 }

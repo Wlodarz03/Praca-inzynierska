@@ -49,6 +49,7 @@ public class TurretOptionsUI : MonoBehaviour
     {
         int sellAmount = turret.GetComponent<Turret>().GetTurretLogic.Cost - 75;
         TowerDefenseManager.Instance.AddCurrency(sellAmount);
+        TowerDefenseManager.Instance.PlaySellSound();
         Destroy(turret);
         gameObject.SetActive(false);
     }

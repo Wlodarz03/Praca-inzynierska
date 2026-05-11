@@ -14,7 +14,6 @@ public class HistoryManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -50,7 +49,7 @@ public class HistoryManager : MonoBehaviour
             if (i < reversed.Count)
             {
                 var entry = reversed[i];
-                entries[i].GetComponentInChildren<TextMeshProUGUI>().text = $"{i+1}. {entry.animal}.{entry.button} \n  - {entry.energy} energy";
+                entries[i].GetComponentInChildren<TextMeshProUGUI>().text = $"{i+1}. {entry.animal}.{entry.button} \n  - {entry.energy} Energy";
                 entries[i].SetActive(true);
             }
             else

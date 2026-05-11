@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6ff854d03754694b84b6914280052a0, type: 3}
+  m_Name: MVP
+  m_EditorClassIdentifier: Assembly-CSharp::DesignPatternCode
+  patternName: ModelViewPresenter
+  files:
+  - fileName: Model
+    code: "public class Health: MonoBehaviour\r\n{\r\n   public event Action HealthChanged;\n\r\n  
+      private const int minHealth = 0;\r\n   private const int maxHealth = 100;\r\n  
+      private int currentHealth;\n\r\n   public int CurrentHealth { get => currentHealth;
+      set => currentHealth = value; }\r\n   public int MinHealth => minHealth;\r\n  
+      public int MaxHealth => maxHealth;\n\r\n   public void Increment(int amount)\r\n  
+      {\r\n      currentHealth += amount;\r\n      currentHealth = Mathf.Clamp(currentHealth,
+      minHealth, maxHealth);\r\n      UpdateHealth();\r\n   }\n\r\n   public void
+      Decrement(int amount)\r\n   {\r\n      currentHealth -= amount;\r\n      currentHealth
+      = Mathf.Clamp(currentHealth, minHealth, maxHealth);\r\n      UpdateHealth();\r\n  
+      }\n\r\n   public void Restore()\r\n   {\r\n      currentHealth = maxHealth;\r\n     
+      UpdateHealth();\r\n   }\n\r\n   public void UpdateHealth()\r\n   {\r\n     
+      HealthChanged?.Invoke();\r\n   }\r\n}"
+  - fileName: Presenter
+    code: "public class HealthPresenter : MonoBehaviour\r\n{\r\n   [SerializeField]
+      Health health;\r\n   [SerializeField] Slider healthSlider;\n\r\n   private
+      void Start()\r\n   {\r\n      if (health != null)\r\n      {\r\n         health.HealthChanged
+      += OnHealthChanged;\r\n      }\r\n      UpdateView();\r\n   }\n\r\n   private
+      void OnDestroy()\r\n   {\r\n      if (health != null)\r\n      {\r\n        
+      health.HealthChanged -= OnHealthChanged;\r\n      }\r\n   }\n\r\n   public
+      void Damage(int amount)\r\n   {\r\n      health?.Decrement(amount);\r\n   }\n\r\n  
+      public void Heal(int amount)\r\n   {\r\n      health?.Increment(amount);\r\n  
+      }\n\r\n   public void Reset()\r\n   {\r\n      health?.Restore();\r\n   }\n\r\n  
+      public void UpdateView()\r\n   {\r\n      if (health == null)\n         return;\n\r\n     
+      if (healthSlider !=null && health.MaxHealth != 0)\r\n      {\r\n         healthSlider.value
+      = (float) health.CurrentHealth / (float)\r\n         health.MaxHealth;\r\n     
+      }\r\n   }\n\r\n   public void OnHealthChanged()\r\n   {\r\n      UpdateView();\r\n  
+      }\r\n}"
+  - fileName: View
+    code: 'The view is basically a slider that represents health. '

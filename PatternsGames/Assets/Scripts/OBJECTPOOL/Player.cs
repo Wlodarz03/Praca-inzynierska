@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
         {
             isJumping = true;
             rb.linearVelocity = Vector2.up * jumpForce;
+            gameObject.GetComponent<AudioSource>().PlayOneShot(gameObject.GetComponent<AudioSource>().clip);
         }
 
         if (isJumping && Input.GetButton("Jump"))

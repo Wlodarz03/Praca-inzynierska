@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
 
     Spawner spawner;
     GameManagerOP gm;
+    
     private void Start()
     {
         spawner = Spawner.Instance;
@@ -41,6 +42,7 @@ public class UIManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         spawner.ClearObstacles();
+        gameOverUI.SetActive(false);
         gm.StartGame();
     }
 

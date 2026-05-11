@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Weapon weapon;
     [SerializeField] private GameObject levelUpUI;
-    private float fireRate = 0.5f;
+    private float fireRate = 0.6f;
     public float damage = 1f;
     private int killsToLevelUp = 10;
     private int killCount = 0;
@@ -19,9 +20,17 @@ public class PlayerController : MonoBehaviour
     private Vector2 mousePosition;
     private float LevelUpTimer = 1.5f;
 
+    [Header("InfoText")]
+    [SerializeField] private TextMeshProUGUI dmgText;
+    [SerializeField] private TextMeshProUGUI fireRateText;
+    [SerializeField] private TextMeshProUGUI moveSpeedText;
+    [SerializeField] private TextMeshProUGUI killCountText;
+    [SerializeField] private TextMeshProUGUI levelUpInfoText;
+
     void Start()
     {
         gm = FindFirstObjectByType<GameManagerS>();
+        UpdateInfoText();
     }
 
     void OnEnable()
@@ -59,6 +68,8 @@ public class PlayerController : MonoBehaviour
             fireTimer -= Time.deltaTime;
         }
 
+        UpdateInfoText();
+
         moveDirection = new Vector2(moveX, 0f).normalized;
         mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
@@ -85,6 +96,7 @@ public class PlayerController : MonoBehaviour
             fireRate = Mathf.Max(0.1f, fireRate - 0.02f); // szybsze strzelanie
             damage += 0.2f;
             levelUpUI.SetActive(true);
+            FactorySFX.instance.PlayLevelUpSFX();
             Debug.Log($"Level up! FireRate: {fireRate}, Damage: {damage}");
         }
 
@@ -101,7 +113,7 @@ public class PlayerController : MonoBehaviour
 
     public void ResetAtttributes()
     {
-        fireRate = 0.5f;
+        fireRate = 0.6f;
         damage = 1f;
         moveSpeed = 7f;
         killCount = 0;
@@ -110,5 +122,14 @@ public class PlayerController : MonoBehaviour
     public int GetKills()
     {
         return killCount;
+    }
+
+    private void UpdateInfoText()
+    {
+        dmgText.text = $"DAMAGE {damage:F1}";
+        fireRateText.text = $"FIRE RATE {fireRate:F2}s";
+        moveSpeedText.text = $"MOVE SPEED {moveSpeed:F1}";
+        killCountText.text = $"KILLS {killCount}";
+        levelUpInfoText.text = $"TO LEVEL UP {killsToLevelUp - (killCount % killsToLevelUp)}";
     }
 }

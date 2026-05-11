@@ -26,6 +26,11 @@ public class TowerDefenseManager : MonoBehaviour
     private Vector2 mousePos;
     [SerializeField] private Button play;
     [SerializeField] private Button pause;
+    [SerializeField] private AudioClip gameMusic;
+    [SerializeField] private AudioSource sellSound;
+    [SerializeField] private AudioSource enemyDeathSound;
+    [SerializeField] private AudioSource playerHitSound;
+    [SerializeField] private AudioSource gameOverSound;
 
     private NativeHashMap<int, int> costs = new NativeHashMap<int, int>(3, Allocator.Persistent);
 
@@ -41,6 +46,7 @@ public class TowerDefenseManager : MonoBehaviour
         costs[0] = 100;
         costs[1] = 500;
         costs[2] = 1000;
+        AudioManager.Instance.PlayMusic(gameMusic);
     }
 
     void Update()
@@ -74,14 +80,17 @@ public class TowerDefenseManager : MonoBehaviour
 
     private void GameOver()
     {
+        PlayGameOverSound();
         Time.timeScale = 0f;
         AudioManager.Instance.StopNarration();
         wavesText.text = "GAME OVER!\n\nYOU SURVIVED:\n" + enemySpawner.GetCurrentWave() + "\nWAVES";
         mainCanvas.gameObject.SetActive(false);
         otherCanvas.gameObject.SetActive(true);
+        otherCanvas.transform.position = new Vector3(otherCanvas.transform.position.x, otherCanvas.transform.position.y, 1);
     }
     public void PlayerGetHit()
     {
+        PlayPlayerHitSound();
         playerHealth -= 1;
         playerHealthText.text = playerHealth.ToString() + " / 100";
         heart.GetComponent<Animator>().SetTrigger("Hit");
@@ -165,5 +174,25 @@ public class TowerDefenseManager : MonoBehaviour
             Cursor.visible = false;
             cursor.SetActive(true);
         }
+    }
+
+    public void PlaySellSound()
+    {
+        sellSound.PlayOneShot(sellSound.clip);
+    }
+
+    public void PlayEnemyDeathSound()
+    {
+        enemyDeathSound.PlayOneShot(enemyDeathSound.clip);
+    }
+
+    private void PlayPlayerHitSound()
+    {
+        playerHitSound.PlayOneShot(playerHitSound.clip);
+    }
+
+    private void PlayGameOverSound()
+    {
+        gameOverSound.PlayOneShot(gameOverSound.clip);
     }
 }
