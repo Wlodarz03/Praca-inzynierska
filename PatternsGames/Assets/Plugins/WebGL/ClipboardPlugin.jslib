@@ -1,13 +1,10 @@
 mergeInto(LibraryManager.library, {
     CopyToClipboardJS: function (text) {
-        // Konwersja wskaźnika tekstowego z C# na string w JS (nowy standard Unity)
         var str = UTF8ToString(text);
         
-        // Tworzymy ukryty element tekstowy
         var elem = document.createElement('textarea');
         elem.value = str;
         
-        // Unikamy przewijania strony na dół
         elem.style.top = "0";
         elem.style.left = "0";
         elem.style.position = "fixed";

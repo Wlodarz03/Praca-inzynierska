@@ -43,6 +43,7 @@ public class LevelManager : MonoBehaviour
         StartCoroutine(LoadLevelsCoroutine());
         //LoadLevels();
         visualizer.ResetVisualizer();
+        CommandInvoker.ClearHistory();
         //BuildLevel(currentLevel);
     }
 

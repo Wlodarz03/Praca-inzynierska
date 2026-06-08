@@ -7,9 +7,11 @@ public class Spawner : MonoBehaviour
     [SerializeField] private string[] obstacleTags;
     [SerializeField] private Transform obstacleParent;
     public float obstacleSpawnTime = 2f;
-    [Range(0, 1)] public float obstacleSpawnTimeFactor = 0.1f;
-    public float obstacleSpeed = 1f;
-    [Range(0, 1)] public float obstacleSpeedFactor = 0.2f;
+    public float minSpawnTime = 1.4f;
+    public float spawnTimeDecreaseFactor = 0.05f;
+    // [Range(0, 2)] public float obstacleSpawnTimeFactor = 0.1f;
+    public float obstacleSpeed = 3f;
+    [Range(0, 2)] public float obstacleSpeedFactor = 0.3f;
     [SerializeField] private float offscreenX = -15f;
     private float _obstacleSpawnTime;
     private float _obstacleSpeed;
@@ -71,8 +73,9 @@ public class Spawner : MonoBehaviour
 
     private void CalculateFactors()
     {
-        _obstacleSpawnTime = obstacleSpawnTime / Mathf.Pow(timeAlive, obstacleSpawnTimeFactor);
-        _obstacleSpeed = obstacleSpeed * Mathf.Pow(timeAlive, obstacleSpeedFactor);
+        // _obstacleSpawnTime = obstacleSpawnTime / Mathf.Pow(timeAlive, obstacleSpawnTimeFactor);
+        _obstacleSpawnTime = Mathf.Max(minSpawnTime, obstacleSpawnTime - spawnTimeDecreaseFactor * timeAlive);
+        _obstacleSpeed = Mathf.Min(40f, obstacleSpeed * Mathf.Pow(timeAlive, obstacleSpeedFactor));
     }
 
     private void ResetFactors()

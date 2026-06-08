@@ -25,6 +25,8 @@ public class CommandHistoryVisualizer : MonoBehaviour
         targetCurrentPos = currentArrow.localPosition;
         targetStartRot = startArrow.localRotation;
         targetCurrentRot = currentArrow.localRotation;
+        ResetVisualizer();
+        
     }
 
     private void Update()

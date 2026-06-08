@@ -34,4 +34,9 @@ public class Health : MonoBehaviour
     {
         hitPoints += amount;
     }
+
+    public void SetHealth(int amount)
+    {
+        hitPoints = amount;
+    }
 }

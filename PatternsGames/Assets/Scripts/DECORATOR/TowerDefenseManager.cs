@@ -51,16 +51,16 @@ public class TowerDefenseManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0f)
-        {
-            play.gameObject.ButtonDown();
-            play.onClick.Invoke();
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
-        {
-            pause.gameObject.ButtonDown();
-            pause.onClick.Invoke();
-        }
+        // if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 0f)
+        // {
+        //     play.gameObject.ButtonDown();
+        //     play.onClick.Invoke();
+        // }
+        // else if (Input.GetKeyDown(KeyCode.Escape) && Time.timeScale == 1f)
+        // {
+        //     pause.gameObject.ButtonDown();
+        //     pause.onClick.Invoke();
+        // }
 
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         cursor.transform.position = mousePos;

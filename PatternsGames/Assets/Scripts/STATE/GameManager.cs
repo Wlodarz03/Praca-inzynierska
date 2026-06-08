@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
         if (Instance == null)
         {
             Instance = this;
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
         isPlaying = true;
         score = 0;
         currentLevel = 1;
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
     }
 
     public void ToggleNarration()

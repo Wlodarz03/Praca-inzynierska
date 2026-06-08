@@ -9,7 +9,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private TextMeshProUGUI waveText;
 
     [Header("Attributes")]
-    [SerializeField] private int baseEnemies = 8;
+    [SerializeField] private int baseEnemies = 5;
     [SerializeField] private float enemiesPerSecond = 0.5f; // z takim enemiesPerSecond i szybkoscia wroga co najwyzej 2f, w ObjectPool max 17 na ekranie na raz
     [SerializeField] private float timeBetweenWaves = 5f;
     [SerializeField] private float difficultyScalingFactor = 0.75f;
@@ -63,6 +63,11 @@ public class EnemySpawner : MonoBehaviour
         yield return new WaitForSeconds(timeBetweenWaves);
         isSpawning = true;
         enemiesLeftToSpawn = EnemiesPerWave();
+        if (currentWave == 1)
+        {
+            enemyPrefabs[0].GetComponent<Health>().SetHealth(5);
+            Debug.Log("Basic enemy health reset to 5!");
+        }
     }
 
     private void EndWave()
@@ -70,9 +75,11 @@ public class EnemySpawner : MonoBehaviour
         isSpawning = false;
         timeSinceLastSpawn = 0f;
         currentWave++;
-        if ((currentWave - 1) % 2 == 0)
+        // if ((currentWave - 1) % 1 == 0)
+        
+        if (currentWave != 1)
         {
-            enemyPrefabs[0].GetComponent<Health>().IncreaseHealth(1);
+            enemyPrefabs[0].GetComponent<Health>().IncreaseHealth(3);
             Debug.Log("Increased enemy health!");
         }
         StartCoroutine(StartWave());
